@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+.allMainLogo{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.allMainLogo h1{
+    font-family: 'Dancing Script', cursive;
+    text-align: center;
+    text-shadow: 2px 4px #959ef8ab;
+    color: #ffffff;
+}

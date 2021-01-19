@@ -1,0 +1,167 @@
+.entireSignupPage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .signupBackgroundShapes {
+    position: absolute;
+    // display: flex;
+    min-width: 100%;
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    // background-color:brown;
+    .shapeWrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      .circle {
+        $dimension: 10%;
+        position: absolute;
+        // width: $dimension;
+        // height: $dimension;
+        width: $dimension;
+        padding-bottom: $dimension;
+        background-color: blue;
+        border-radius: 50%;
+        background: linear-gradient(
+          to right bottom,
+          rgba(162, 80, 193, 0.9),
+          rgba(253, 207, 207, 0.5)
+        );
+      }
+      .first {
+        // top:50%; left:50%;
+        transform: translate(-33%, -33%) rotate(90deg);
+
+        // margin:0;
+      }
+      .second {
+        // right: 0;
+        // bottom: 0;
+        transform: translate(33%, 33%);
+        // filter: blur(2px);
+      }
+    }
+  }
+  .signup {
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    // background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right top, #65dfc9, #6cdbeb);
+
+    .container {
+      width: 85%;
+      height: 80vh !important;
+      background-color: aliceblue;
+      margin: auto;
+      //aligning items
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      // justify-content: center;
+      flex-direction: column;
+      z-index: 2;
+      background: linear-gradient(
+        to right bottom,
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.3)
+      );
+      border-radius: 2rem;
+      backdrop-filter: blur(3px);
+
+      .logo {
+        width: 100%;
+        height: 10%;
+        margin-top: -11px;
+        // margin-bottom:30px;
+        // background-color:white;
+        display: flex;
+      }
+      .exceptLogo {
+        display: flex;
+        flex-direction: row;
+        height: 90%;
+        width: 100%;
+        .fancyThing {
+          width: 50%;
+          // background-color: #fff;
+          border: 1px solid blue;
+          overflow: hidden;
+          height: 100%;
+          .userPhoto {
+            width: 100%;
+            height: 60%;
+            border: 1px solid red;
+            .wrapper {
+              width: 100%;
+              height: 100%;
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              .anotherWrapper {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .defaultPhotoWrapper {
+                  height: 100%;
+                  width: 100%;
+                  // clip-path: circle();
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  position: absolute;
+                  z-index: 5;
+                  position: absolute;
+                  background-color: #ffffff;
+                  .default_Photo {
+                    position: relative;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    img {
+                      height: 100%;
+                      border-radius: 50%;
+                      border: 2px solid black;
+                      position: relative;
+                      object-fit: cover;
+                      // margin: auto;
+                    }
+                  }
+                }
+
+                .changePhotoOption {
+                  height: 100%;
+                }
+              }
+            }
+          }
+        }
+        .form {
+          width: 50%;
+
+          background-color: rgb(241, 148, 148);
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 761px) {
+  .defaultPhotoWrapper {
+    width: 100%;
+  }
+}

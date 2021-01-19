@@ -1,0 +1,161 @@
+.storageIndex {
+  background-color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  /* animation style */
+}
+.storageIndex {
+.card {
+  width: 400px;
+  height: 535px;
+  background-color: #77d3ff;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  border-radius: 5%;
+  box-shadow: 5px 5px 20px #5055f7;
+  position: relative;
+}
+
+.card form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card form .logo {
+  height: 150px;
+  width: 150px;
+  border-radius: 80%;
+  background-color: #bfc1f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card form .logo svg {
+  fill: #d50a0a;
+}
+
+.card form h1 {
+  font-family: 'Henny Penny', cursive;
+}
+
+.card form .levels {
+  position: relative;
+  margin-top: 25px;
+  margin-bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.card form .l-user {
+  margin-top: 50px;
+}
+
+.card form input {
+  margin-top: 0px;
+  border: none;
+  width: 250px;
+  height: 25px;
+  /* background-color: aquamarine; */
+  background-color: #24eff8;
+  border: 2px solid #79fefe;
+  color: blueviolet;
+  text-align: center;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.card form .submit {
+  width: 90%;
+  height: 45px;
+  background-color: #ff4600;
+  border-radius: 20px;
+  margin-top: 15px;
+  outline: none;
+  border: 1px solid #c6afaf;
+  color: #24eff8;
+  background-image: linear-gradient(to right, rgb(252, 53, 76) 0%, rgb(10, 191, 188) 51%, rgb(252, 53, 76) 100%);
+  /* style */
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.card form .submit:hover {
+  background-position: right center;
+  /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.signup {
+  width: 80%;
+  height: 10%;
+  background-color: #ff4600;
+  background-image: linear-gradient(to right, #DD5E89 0%, #F7BB97 51%, #DD5E89 100%);
+  border-radius: 20px;
+  bottom: 15px;
+  outline: none;
+  border: 1px solid #c0d2e8;
+  color: #24eff8;
+  position: absolute;
+  /* extra style */
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+  box-shadow: 0 0 20px #eee;
+}
+
+.signup:hover {
+  background-position: right center;
+  /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.b-s {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 25px;
+  color: #eee;
+  margin-top: -5px;
+}
+
+.animation {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: blueviolet;
+  z-index: 2;
+  margin-left: 200vw;
+  /* animation style */
+  display: none;
+}
+/* register */
+
+.register {
+  display: none;
+}
+}
