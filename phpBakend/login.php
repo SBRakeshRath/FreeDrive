@@ -51,11 +51,18 @@ $detail_Success = new Detail_success();
 $error->sql_connection = true;
 $error->receive_username_password = true;
 $error->cause_ERROR = $cause_ERROR;
-$success->sql_connection = true;
-$success->receive_username_password = true;
+$success->sql_connection = false;
+$success->receive_username_password = false;
 $success->detail_Success = $detail_Success;
 
 $show_error_page = false;
+
+//userData 
+
+// $userdata->login = false;
+$userdata->session_id = false;
+$userdata->userToken = false;
+$userdata->error_exists=true;
 
 //Token Checker.....>>>>>>>>
 
@@ -75,30 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userdata->error_exists = true;
 
     if (isset($_POST["LoginForm"])) {
-        // echo ("\n result from loginPage");
-        if ($conn) {
-            $username = mysqli_real_escape_string($conn, trim($_POST["username"]));
-            // $password_r = trim($_POST["password"]);
-            $password = mysqli_real_escape_string($conn, $_POST["password"]);
-            // echo ($username . $password);
-        } else {
-            $cause_ERROR->sql_connection = "our database is not responding Your request";
-            $error->sql_connection = false;
-            $userdata->error_exists = true;
-        }
-        // echo($password);
-        // $_lastname = mysql_real_escape_string($username);
-        // echo($_lastname);
-        // $remember_me = $_POST["Remember_me"];
-        // echo($remember_me);
-        // if(isset($_POST["Remember_me"])){
-        // 	$userdata->userToken = $_POST["Remember_me"];
-        // }else{$userdata->userToken = "off";}
 
-        if (isset($username) && (isset($password))) {
-            // echo("username is" . $username."\nPassword is".$password);
-            $success->receive_username_password = true;
-            $detail_Success->receive_username_password = "received username and password";
             if (!$conn) {
                 // die("connection die : " . mysqli_connect_error());
                 $cause_ERROR->sql_connection = "our database is not responding Your request";
@@ -107,14 +91,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $detail_Success->sql_connection = "connection to the database established";
                 $success->sql_connection = true;
-                $userdata->error_exists = false;
-                // $query = "SELECT * FROM `usersdeatail` WHERE `username` = '$username' AND `password` = '$password'";
-                // $result = mysqli_query($conn, $query);
-                // $result = mysqli_fetch_assoc($result);
+                $error->sql_connection = false;
+                $userdata->login = "yo";
 
-                //..>>>> prepared statements
-
-                //create a template
+                //set username and password
+                // echo($_POST["password"]);
+                $username = mysqli_real_escape_string($conn, trim($_POST["username"]));
+                // $password_r = trim($_POST["password"]);
+                $password = mysqli_real_escape_string($conn, $_POST["password"]);
+                // echo ($username . $password)
                 $sql = "SELECT * FROM `usersdeatail` WHERE `username` = ? AND `password` = ?";
                 //create a prepared statement
                 $stmt = mysqli_stmt_init($conn);
@@ -132,7 +117,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $userdata->login = true;
                     // echo ("\nwelcome to login page");
                     if (isset($_POST["Remember_me"])) {
-                        $userdata->userToken = $result["UserToken"];
+                        // echo("on");
+                        $userdata->userToken = $row["UserToken"];
+                        // echo $result["UserToken"] ;
+                        // $userdata->userToken = $result["UserToken"];
                     } else {
                         $userdata->userToken = false;
                     }
@@ -141,21 +129,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION["username"] = $username;
                     $_SESSION["login"] = $username;
                     if (isset($_SESSION["username"])) {
-                        // echo ("\nsession set");
-                        // echo ("\n session id is :--" . session_id());
-                        // $userdata = new userdata();
                         $userdata->login = true;
                         $userdata->session_id = session_id();
                     }
-                } else {
+                }
+                 else {
                     // echo ("\nuser not found");
                     $userdata->login = false;
                 }
+            
             }
-        } else {
-            $cause_ERROR->receive_username_password = "server has not received your request";
-            $error->receive_username_password = true;
-        }
+        
         $userdata->success_list = $success;
         $userdata->errors_list = $error;
         $jsonData = json_encode($userdata);
@@ -204,8 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 } else {
-    // echo ("\n no post Request");
-    // header("Location: http://localhost:3000/storage/");
+
     $show_error_page = true;
 }
 
