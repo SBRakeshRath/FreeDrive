@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import  axios from 'axios';
 import "./signup.scss";
 //material ui
 import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
+
 
 //material ui close
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
@@ -14,6 +16,7 @@ import femaleImage from "./images/SignUp page Images/Femaleuser.png";
 // const photo = true;
 
 const Signup = () => {
+  let apiURL = "http://localhost/GoogleDrive/phpBakend/signup.php";
   // const [uploadImage, uploadImageCheck] = useState(false);
   // const imagePreview = () => {
   //   console.log("changed");
@@ -26,7 +29,6 @@ const Signup = () => {
   const defaultPhotoWrapper = useRef(null);
   const backgroundShapeArrangement = () => {
     if (container !== null) {
-      const style = getComputedStyle(container.current);
       const ShapeStyle = shapes.current.children;
       // ShapeStyle[0].style.marginLeft = style.marginLeft;
       // ShapeStyle[0].style.marginTop = style.marginTop;
@@ -108,15 +110,18 @@ const PreviewProfileImage =  (e)=>{
     );
   };
   const ImageUpload = useRef(null);
-  const Alert = (props) => {
+  const ChangeImage = () => {
+    ImageUpload.current.click();
+  };
+  const Alert = () => {
     
-    const ChangeImage = () => {
-      ImageUpload.current.click();
-    };
+    // const ChangeImage = () => {
+    //   ImageUpload.current.click();
+    // };
     return (
       <div
         className="alert"
-        style={{ display: "none" }}
+        style={{ visibility: "hidden" }}
         ref={alertShowers}
       >
         <div className="msgContainer">
@@ -144,7 +149,7 @@ const PreviewProfileImage =  (e)=>{
     // alert("clicked");
     // var t0 = performance.now();
     const AlertMsg = alertShowers.current.style;
-    AlertMsg.display = "flex";
+    AlertMsg.visibility = "visible";
     //   var t1 = performance.now()
     // console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
   };
@@ -160,10 +165,45 @@ const PreviewProfileImage =  (e)=>{
     // console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
   };
 
+
+// .......................................>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// Backend Part
+
+//>>>>>>>>>>>>>>>.....................
+const sendPostRequest = async (data)=>{
+  console.log("sendPostRequest");
+  const config = {
+    method: "POST",
+    url: apiURL,
+    data: data,
+    withCredentials: true,
+  };
+  const req = await axios(config);
+  const jsondata = JSON.parse(JSON.stringify(req.data));
+  console.log(jsondata);
+
+}
+const form = useRef(null);
+const formSubmit = (e)=>{
+  e.preventDefault();
+  const data = new FormData(form.current);
+    // console.log(data);
+    // console.log(data.entries);
+    // for (var pair of data.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
+    sendPostRequest(data);
+}
+
+
+
+
+
   return (
     <>
       <div className="entireSignupPage">
-        <Alert />
+        <Alert/>
         <div className="signupBackgroundShapes">
           <div className="shapeWrapper" ref={shapes}>
             <div className="circle first" id="circleShapeFirst"></div>
@@ -197,25 +237,26 @@ const PreviewProfileImage =  (e)=>{
                     </div>
                   </div>
                 </div>
-                <div className="text">
-                  <h1>Change profile picture by click upon it</h1>
+                <div className="text" onClick={ChangeImage}>
+                  <h1 >Change profile picture by click upon it</h1>
                 </div>
               </div>
               <div className="form">
-                <form>
+                <form ref={form} onSubmit={formSubmit}>
+                <input type="hidden" name="SignUPForm" value="SignUPForm" />
                   <div className="name">
                     <div className="fName" >
                       <label htmlFor="" className="l_f_name" style={{display:"none"}}>
                         First Name
                       </label>
-                      <input type="text" className="first_name" placeholder="First Name"/>
+                      <input type="text" className="first_name" placeholder="First Name" name="fname"/>
                       <span className="error">No error</span>
                     </div>
                     <div className="lname">
                       <label htmlFor="lname" className="lname" style={{display:"none"}} >
                         Last name
                       </label>
-                      <input type="text" className="last_name" placeholder="Last Name" />
+                      <input type="text" className="last_name" placeholder="Last Name" name = "lname"/>
                       <span className="error">No error</span>
                     </div>
                   </div>
@@ -223,14 +264,14 @@ const PreviewProfileImage =  (e)=>{
                     <label htmlFor="username" className="l_username" style = {{display:"none"}}>
                       User Name
                     </label>
-                    <input type="username" name="username" placeholder="username" />
+                    <input type="username" name="username" placeholder="username"  />
                     <span className="error">No error</span>
                   </div>
                   <div className="password">
                     <label htmlFor="password" className="l_password">
                       password
                     </label>
-                    <input type="password" name="password" placeholder="password" />
+                    <input type="password" name="password" placeholder="password"  />
                     <span className="error">No error</span>
                   </div>
                   <div className="email">
@@ -260,7 +301,8 @@ const PreviewProfileImage =  (e)=>{
                     ></textarea>
                     <span className="error">No error</span>
                   </div>
-                  <input type="file" style={{ display: "none" }} ref={ImageUpload}  onChange={PreviewProfileImage}/>
+                  <input type="file" style={{ display: "none" }} name="userPhoto" ref={ImageUpload}  onChange={PreviewProfileImage}/>
+                  <input type="submit" className="submitButton"/>
                 </form>
               </div>
               <div className="buttons"></div>
