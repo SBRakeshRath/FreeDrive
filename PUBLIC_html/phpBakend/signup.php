@@ -209,7 +209,7 @@ if ($_POST) {
                     }
 
                     if ($AvailableUsername == false && $AvailableEmail == false && $AvailableCno == false) {
-                        $newDirRoot = "../1213456ALLUSERS/";
+                        $newDirRoot = "../../1213456ALLUSERS/";
                         // $newDirRoot = "";
                         clearstatcache();
                         $salt = "sbrakeshrath1234";
