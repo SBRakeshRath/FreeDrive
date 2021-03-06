@@ -88,13 +88,13 @@ if ($_POST) {
             } else {
                 $cno_format = false;
             }
-            if (preg_match('/^[a-zA-Z]{1,30}$/', $fname)) {
+            if (preg_match('/^[a-zA-Z\.\ ]{1,30}$/', $fname)) {
                 // echo("\n invalid fname");
                 $fname_format = true;
             } else {
                 $fname_format = false;
             }
-            if (preg_match('/^[a-zA-Z]{1,30}$/', $lname)) {
+            if (preg_match('/^[a-zA-Z\.\ ]{1,30}$/', $lname)) {
                 // echo("\n invalid lname");
                 $lname_format = true;
             } else {

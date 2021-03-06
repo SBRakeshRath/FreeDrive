@@ -1,10 +1,10 @@
 html,
 body {
-  height: 100%;
+  // height: 100%;
 }
 
 #root {
-  height: 100%;
+  // height: 100%;
 }
 .entireSignupPage {
   position: relative;
@@ -73,6 +73,8 @@ body {
       // min-height: 80vh;
       background-color: aliceblue;
       margin: auto;
+      margin-top: 44px;
+      margin-bottom:44px;
       //aligning items
       padding: 20px;
       display: flex;
@@ -212,6 +214,7 @@ body {
               height: 70px;
               // border: 2px solid gray;
               margin: 0 auto;
+              margin-bottom:10px;
               // justify-content: space-around;
               .fName,
               .lname {
@@ -229,10 +232,20 @@ body {
                   height: 35px;
                   margin-bottom: 5px;
                 }
-                span {
-                  visibility: hidden;
-                  color: red;
-                  padding-left: 10px;
+                .errorContainer {
+                  width: 90%;
+                  span {
+                    visibility: hidden;
+                    color: red;
+                    padding-left: 10px;
+                    font-size: 1rem;
+                  }
+                  .helpIcon {
+                    width: 0.7em;
+                    height: 0.7em;
+                    float: right;
+                    cursor: pointer;
+                  }
                 }
               }
             }
@@ -245,6 +258,7 @@ body {
               display: flex;
               align-items: center;
               padding: 2px 2px;
+              margin-bottom: 10px;
               // height: 70px;
               // border: 2px solid gray;
               // margin: 0 auto;
@@ -261,10 +275,19 @@ body {
                 height: 35px;
                 margin-bottom: 5px;
               }
-              span {
+              .errorContainer {
                 width: 48%;
-                color: red;
-                padding-left: 10px;
+                span {
+                  // visibility: hidden;
+                  color: red;
+                  padding-left: 10px;
+                }
+                .helpIcon {
+                  width: 0.7em;
+                  height: 0.7em;
+                  float: right;
+                  cursor: pointer;
+                }
               }
             }
             .desc {
@@ -287,10 +310,8 @@ body {
               background-color: #f0f8ff00;
               border: 2px solid blue;
               cursor: pointer;
-              font-size:1.1em;
-              font-family: 'ROBOTO',sans-serif;
-              
-              
+              font-size: 1.1em;
+              font-family: "ROBOTO", sans-serif;
             }
           }
         }
@@ -309,14 +330,15 @@ body {
     justify-content: center;
     visibility: visible;
     // display: none;
+    // display: none;
     // transition: all 0.3s;
     .msgContainer {
       background-color: #f8f8f8;
       border-radius: 5px;
       width: 500px;
-      height: 500px;
-      max-width: 50%;
-      max-height: 50%;
+      min-height: 500px;
+      max-width: 100%;
+      // max-height: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -326,6 +348,7 @@ body {
       padding-bottom: 50px;
       padding-right: 10px;
       padding-left: 10px;
+      // display:none;
       .top {
         position: absolute;
         top: 4px;
@@ -377,9 +400,108 @@ body {
     }
   }
 }
+//message Showers
 
-@media (min-width: 761px) {
-  .defaultPhotoWrapper {
+.messageContainer {
+  position: absolute;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: rgba(36, 31, 31, 0.486);
+  z-index: 6000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  .message {
+    min-width: 200px;
+    max-width: 100%;
+    min-height: 200px;
+    background-color: #33db95;
+    padding: 20px;
+    ul {
+      padding: 10px;
+    }
+  }
+  .button {
+    svg {
+      background-color: #b42287;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
+
+// @media (min-width: 761px) {
+//   .defaultPhotoWrapper {
+//     width: 100%;
+//   }
+// }
+@media (max-width: 500px) {
+  .entireSignupPage .alert .msgContainer{
     width: 100%;
+  }
+  .entireSignupPage .signup .container {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    .exceptLogo {
+      flex-direction: column;
+      // .logo{}
+
+      .fancyThing {
+        width: 100%;
+        .userPhoto {
+          height: 250px;
+        }
+      }
+      .form {
+        width: 100%;
+        form {
+          .username,
+          .password,
+          .email,
+          .contact_no,
+          .desc {
+            flex-direction: column;
+            input {
+              width: 90%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 1100px) and (min-width:501px) {
+  .entireSignupPage .signup .container {
+    width: 100%;
+    margin-top:0px;
+    margin-bottom: 0px;
+    .exceptLogo {
+      flex-direction: column;
+      // .logo{}
+
+      .fancyThing {
+        width: 100%;
+        .userPhoto {
+          height: 250px;
+        }
+      }
+      .form {
+        width: 100%;
+        form {
+          .username,
+          .password,
+          .email,
+          .contact_no,
+          .desc {
+            flex-direction: column;
+            input {
+              width: 65%;
+            }
+          }
+        }
+      }
+    }
   }
 }

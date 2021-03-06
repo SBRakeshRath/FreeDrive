@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import  axios from 'axios';
+import axios from "axios";
 import "./signup.scss";
 //material ui
 import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
-
+import HelpIcon from "@material-ui/icons/Help";
+import Preloader from "./preloader";
+import { Redirect, Link } from "react-router-dom";
 
 //material ui close
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
@@ -16,7 +18,8 @@ import femaleImage from "./images/SignUp page Images/Femaleuser.png";
 // const photo = true;
 
 const Signup = () => {
-  let apiURL = "http://localhost/GoogleDrive/phpBakend/signup.php";
+  let apiURL = "http://localhost/GoogleDrive/PUBLIC_html/phpBakend/signup.php";
+  // const [apiResponse, updateApiResponse] = useState(null);
   // const [uploadImage, uploadImageCheck] = useState(false);
   // const imagePreview = () => {
   //   console.log("changed");
@@ -24,22 +27,25 @@ const Signup = () => {
   //   const file = this.innerHTML;
   //   console.log(file);
   // };
+  const [isSuccess,updateIsSuccess] = useState({state:false,cause:""});
   const container = useRef(null);
   const shapes = useRef(null);
   const defaultPhotoWrapper = useRef(null);
   const backgroundShapeArrangement = () => {
     if (container !== null) {
+      if(shapes === null) return;
+      if (shapes.current === null) return;
       const ShapeStyle = shapes.current.children;
       // ShapeStyle[0].style.marginLeft = style.marginLeft;
       // ShapeStyle[0].style.marginTop = style.marginTop;
       // ShapeStyle[1].style.marginRight = style.marginRight;
       // ShapeStyle[1].style.marginBottom = style.marginBottom;
       // console.log(style.marginLeft);
-      console.log(
-        parseFloat(getComputedStyle(shapes.current.children[1]).width) + "px"
-      );
-      console.log(container.current.offsetLeft);
-      console.log(container.current.clientWidth);
+      // console.log(
+      //   parseFloat(getComputedStyle(shapes.current.children[1]).width) + "px"
+      // );
+      // console.log(container.current.offsetLeft);
+      // console.log(container.current.clientWidth);
       ShapeStyle[0].style.marginLeft = container.current.offsetLeft + "px";
       ShapeStyle[0].style.marginTop = container.current.offsetTop + "px";
       ShapeStyle[1].style.marginLeft =
@@ -62,6 +68,7 @@ const Signup = () => {
   useEffect(() => {
     const defaultPhotoWrapperStyle = defaultPhotoWrapper.current.style;
     const responsiveProfilePhoto = () => {
+      if (anotherWrapper.current === null) return;
       const anotherWrapperStyle = getComputedStyle(anotherWrapper.current);
       const width = anotherWrapperStyle.width;
       const height = anotherWrapperStyle.height;
@@ -98,10 +105,27 @@ const Signup = () => {
   //profile Image changeProp
   const [ProfileImgSrc, newProfileImgSrc] = useState(femaleImage);
   //close Profile Image changer
-const PreviewProfileImage =  (e)=>{
-  console.log(URL.createObjectURL(e.target.files[0]));
-  newProfileImgSrc(URL.createObjectURL(e.target.files[0]));
-}
+  const PreviewProfileImage = (e) => {
+    //check file is valid or not
+    if (e.target.files[0]) {
+      // you have a file
+
+      const imageType = e.target.files[0].type.split("/")[0];
+      // console.log(imageType);
+      if (imageType !== "image") {
+        alert("please enter an image ");
+        e.target.value = null;
+        newProfileImgSrc(femaleImage);
+        return;
+      }
+      return (
+        console.log(URL.createObjectURL(e.target.files[0])),
+        newProfileImgSrc(URL.createObjectURL(e.target.files[0]))
+      );
+    } else {
+      alert("oops ! some error occurred");
+    }
+  };
   const ProfileImage = (props) => {
     return (
       <div className="ProfileImage">
@@ -113,8 +137,29 @@ const PreviewProfileImage =  (e)=>{
   const ChangeImage = () => {
     ImageUpload.current.click();
   };
+  //message shower
+  const Message = () => {
+    return (
+      <div className="messageContainer" ref={MessageContainer}>
+        <div className="message">
+          <div className="button">
+            <CloseIcon
+              onClick={() => {
+                MessageContainer.current.style.visibility = "hidden";
+                update_preloader("none");
+              }}
+            />
+          </div>
+          <div className="text" ref={MessageTextBox}></div>
+        </div>
+      </div>
+    );
+  };
+  //
+  const MessageContainer = useRef(null);
+  const MessageTextBox = useRef(null);
+
   const Alert = () => {
-    
     // const ChangeImage = () => {
     //   ImageUpload.current.click();
     // };
@@ -146,64 +191,239 @@ const PreviewProfileImage =  (e)=>{
 
   const alertShowers = useRef(null);
   const visibleAlert = () => {
-    // alert("clicked");
-    // var t0 = performance.now();
     const AlertMsg = alertShowers.current.style;
     AlertMsg.visibility = "visible";
-    //   var t1 = performance.now()
-    // console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
   };
 
   const closeAlert = () => {
-    // var t0 = performance.now()
-    // <---- The function you're measuring time for
-
     const AlertMsg = alertShowers.current.style;
     AlertMsg.visibility = "hidden";
-
-    // var t1 = performance.now()
-    // console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
   };
 
+  // .......................................>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-// .......................................>>>>>>>>>>>>>>>>>>>>>>>>>>
+  // Backend Part
 
-// Backend Part
+  //>>>>>>>>>>>>>>>.....................
 
-//>>>>>>>>>>>>>>>.....................
-const sendPostRequest = async (data)=>{
-  console.log("sendPostRequest");
-  const config = {
-    method: "POST",
-    url: apiURL,
-    data: data,
-    withCredentials: true,
+  // const preloader = useRef(null);
+  // const preloader = React.createRef();
+  // const preloader = useRef(null);
+  const [preloader, update_preloader] = useState("none");
+  // let preloader = ()
+  const sendPostRequest = async (data) => {
+    // console.log(preloader);
+    update_preloader("block");
+    try {
+      console.log("sendPostRequest");
+      const config = {
+        method: "POST",
+        url: apiURL,
+        data: data,
+        withCredentials: true,
+      };
+
+      const req = await axios(config);
+
+      const jsondata = JSON.parse(JSON.stringify(req.data));
+      // updateApiResponse(jsondata);
+      ResponseValidation(jsondata);
+      
+      console.log(jsondata.ImportantResponse[0].signup);
+    } catch (error) {
+      console.log(JSON.stringify(error));
+      alert("oops! something went wrong ");
+      update_preloader("none");
+    }
+    // update_preloader("none");
   };
-  const req = await axios(config);
-  const jsondata = JSON.parse(JSON.stringify(req.data));
-  console.log(jsondata);
+  const form = useRef(null);
+  const formSubmit = (e) => {
+    if (
+      form_format_error.cno_format &&
+      form_format_error.email_format &&
+      form_format_error.first_name_format &&
+      form_format_error.last_name_format &&
+      form_format_error.password_format &&
+      form_format_error.username_format
+    ) {
+      e.preventDefault();
+      const data = new FormData(form.current);
+      // console.log(data);
+      // console.log(data.entries);
+      // for (var pair of data.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
+      sendPostRequest(data);
+      // update_form_format_error({
+      //   final_format: false,
+      //   first_name_format: false,
+      //   last_name_format: false,
+      //   email_format: false,
+      //   cno_format: false,
+      //   password_format: false,
+      //   username_format: false,
+      // });
+    } else {
+      alert("please Enter all the valid credentials");
+      e.preventDefault();
+      return false;
+    }
+  };
 
-}
-const form = useRef(null);
-const formSubmit = (e)=>{
-  e.preventDefault();
-  const data = new FormData(form.current);
-    // console.log(data);
-    // console.log(data.entries);
-    // for (var pair of data.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
-    sendPostRequest(data);
-}
+  //credential Validation....>>>>>>>
+  const [form_format_error, update_form_format_error] = useState({
+    final_format: false,
+    first_name_format: false,
+    last_name_format: false,
+    email_format: false,
+    cno_format: false,
+    password_format: false,
+    username_format: false,
+  });
 
+  //fname validation
+  const error_first_name = useRef(null);
+  const first_name_change = (e) => {
+    const fname_text = e.target.value;
+    // console.log(form_format_error.first_name_format);
+    if (fname_text.match(/^[a-zA-Z. ]{1,30}$/)) {
+      error_first_name.current.style.visibility = "hidden";
+      update_form_format_error({
+        ...form_format_error,
+        first_name_format: true,
+      });
+    } else {
+      error_first_name.current.style.visibility = "visible";
+    }
+  };
+  //lname validation
+  const error_last_name = useRef(null);
+  const last_name_change = (e) => {
+    const lname_text = e.target.value;
+    if (lname_text.match(/^[a-zA-Z. ]{1,30}$/)) {
+      error_last_name.current.style.visibility = "hidden";
+      update_form_format_error({
+        ...form_format_error,
+        last_name_format: true,
+      });
+    } else {
+      error_last_name.current.style.visibility = "visible";
+    }
+  };
+  //email validation
+  const error_email = useRef(null);
+  const email_change = (e) => {
+    const email_text = e.target.value;
+    console.log(email_text);
+    if (email_text.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/)) {
+      error_email.current.style.visibility = "hidden";
+      update_form_format_error({ ...form_format_error, email_format: true });
+    } else {
+      error_email.current.style.visibility = "visible";
+    }
+  };
+  //username validation
+  const error_username = useRef(null);
+  const username_change = (e) => {
+    const username_text = e.target.value;
+    if (username_text.match(/^[a-zA-Z\-@#\-_$%^&+=§!?0-9-]{6,20}$/)) {
+      error_username.current.style.visibility = "hidden";
+      update_form_format_error({ ...form_format_error, username_format: true });
+    } else {
+      error_username.current.style.visibility = "visible";
+    }
+  };
+  //password validation
+  const error_password = useRef(null);
+  const password_change = (e) => {
+    const password_text = e.target.value;
 
-
-
+    if (
+      password_text.match(
+        /^(?=.*\d)(?=.*[@#\-_$%^&+=§!.?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!?]{8,20}$/
+      )
+    ) {
+      error_password.current.style.visibility = "hidden";
+      update_form_format_error({ ...form_format_error, password_format: true });
+    } else {
+      error_password.current.style.visibility = "visible";
+    }
+  };
+  //cno validation
+  const error_cno = useRef(null);
+  const cno_change = (e) => {
+    const con_text = e.target.value;
+    if (con_text.match(/^[0-9]{10,10}$/)) {
+      error_cno.current.style.visibility = "hidden";
+      update_form_format_error({ ...form_format_error, cno_format: true });
+    } else {
+      error_cno.current.style.visibility = "visible";
+    }
+  };
+  //const all formats ///....>>>>>>>>
+  const allFormats = {
+    contactNo_qn: "Contact No must be an 10 digit number e.g (9687500219)",
+    email_qn: "Valid email format is john@cena.com",
+    username_qn:
+      "<p1>Username must be greater than 6 and less-than  20 chars</p1> .<br/> <br/>It can only contain <br/> <ul><li>English alphabet</li><li>English number</li><li>Special Chars :--@#-_$%^&+=§!?0-9-</li></ul>",
+    password_qn:
+      "<p1>Password must be greater than 8 and less than 20</p1><br/><p1>password must contain :--</p1><br/><ul><li>an upperCase letter eg.- (ABCD)</li><<li>a lower case letter e.g(abcd)</li><li>a special character like (@#-_$%^&+=§!?)</li>/ul>",
+    FirstName_qn:
+      "<p1> First name can only be combination of letter and greater than 1 letter and less than 30 letter</p1>",
+    LastName_qn:
+      "<p1> last name can only be combination of letter and greater than 1 letter and less than 30 letter</p1>",
+  };
+  const showSmallMessage = (message) => {
+    MessageContainer.current.style.visibility = "visible";
+    MessageTextBox.current.innerHTML = message;
+  };
+  const showCauseOfError = (e) => {
+    const keyId = e.currentTarget.getAttribute("name");
+    const message = allFormats[keyId];
+    console.log(keyId);
+    console.log(message);
+    //const MessageContainer = useRef(null);
+    //const MessageTextBox = useRef(null);
+    showSmallMessage(message);
+  };
+  //redirect header
+  function ResponseValidation(apiResponse) {
+    if (apiResponse !== null) {
+      if (apiResponse.ImportantResponse[0].signup) {
+        console.log("M ERROR");
+        updateIsSuccess({state:true,cause:"Successfully Registered"});
+        // return <Redirect to="/Storage" />;
+      } else if (apiResponse.ImportantResponse[0].signup === false) {
+        console.log(apiResponse.ImportantResponse[0].AvailableContactNumber);
+        console.log(apiResponse.ImportantResponse[0]);
+        let cause = "oops! something went wrong";
+        if (apiResponse.ImportantResponse[0].AvailableContactNumber) {
+          cause = "This contact n0 is already present";
+          showSmallMessage(cause);
+        } else if (apiResponse.ImportantResponse[0].AvailableEmail) {
+          cause = "This email is already present";
+          console.log(cause);
+          showSmallMessage(cause);
+        } else if (apiResponse.ImportantResponse[0].AvailableUsername) {
+          cause = "This username is not available";
+          showSmallMessage(cause);
+        }
+      }
+    }
+  }
+  if(isSuccess.state){
+    console.log("state" +isSuccess.state);
+    
+    return <Redirect to="/Storage/Admin" />;
+  }
 
   return (
     <>
       <div className="entireSignupPage">
-        <Alert/>
+        <Preloader display={preloader} />
+        <Alert />
+        <Message style={{ visibility: "hidden" }} />
         <div className="signupBackgroundShapes">
           <div className="shapeWrapper" ref={shapes}>
             <div className="circle first" id="circleShapeFirst"></div>
@@ -237,56 +457,160 @@ const formSubmit = (e)=>{
                     </div>
                   </div>
                 </div>
-                <div className="text" onClick={ChangeImage}>
-                  <h1 >Change profile picture by click upon it</h1>
+                <div
+                  className="text"
+                  onClick={visibleAlert}
+                  style={{ cursor: "pointer" }}
+                >
+                  <h1>Change profile picture by click upon it</h1>
                 </div>
               </div>
               <div className="form">
-                <form ref={form} onSubmit={formSubmit}>
-                <input type="hidden" name="SignUPForm" value="SignUPForm" />
+                <form ref={form} onSubmit={formSubmit} autoComplete= "on">
+                  <input type="hidden" name="SignUPForm" value="SignUPForm" />
                   <div className="name">
-                    <div className="fName" >
-                      <label htmlFor="" className="l_f_name" style={{display:"none"}}>
+                    <div className="fName">
+                      <label
+                        htmlFor=""
+                        className="l_f_name"
+                        style={{ display: "none" }}
+                      >
                         First Name
                       </label>
-                      <input type="text" className="first_name" placeholder="First Name" name="fname"/>
-                      <span className="error">No error</span>
+                      <input
+                        type="text"
+                        className="first_name"
+                        placeholder="First Name"
+                        name="fname"
+                        onChange={first_name_change}
+                      />
+                      <div className="errorContainer">
+                        <span className="error" ref={error_first_name}>
+                          Not Valid
+                        </span>
+                        <HelpIcon
+                          className="helpIcon"
+                          name="FirstName_qn"
+                          onClick={showCauseOfError}
+                        />
+                      </div>
                     </div>
                     <div className="lname">
-                      <label htmlFor="lname" className="lname" style={{display:"none"}} >
+                      <label
+                        htmlFor="lname"
+                        className="lname"
+                        style={{ display: "none" }}
+                      >
                         Last name
                       </label>
-                      <input type="text" className="last_name" placeholder="Last Name" name = "lname"/>
-                      <span className="error">No error</span>
+                      <input
+                        type="text"
+                        className="last_name"
+                        placeholder="Last Name"
+                        name="lname"
+                        onChange={last_name_change}
+                      />
+                      <div className="errorContainer">
+                        <span className="error" ref={error_last_name}>
+                          Not Valid
+                        </span>
+                        <HelpIcon
+                          className="helpIcon"
+                          name="LastName_qn"
+                          onClick={showCauseOfError}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="username">
-                    <label htmlFor="username" className="l_username" style = {{display:"none"}}>
+                    <label
+                      htmlFor="username"
+                      className="l_username"
+                      style={{ display: "none" }}
+                    >
                       User Name
                     </label>
-                    <input type="username" name="username" placeholder="username"  />
-                    <span className="error">No error</span>
+                    <input
+                      type="username"
+                      name="username"
+                      placeholder="username"
+                      onChange={username_change}
+                      autoComplete = "username"
+                    />
+                    <div className="errorContainer">
+                      <span className="error" ref={error_username}>
+                        Not Valid
+                      </span>
+                      <HelpIcon
+                        className="helpIcon"
+                        name="username_qn"
+                        onClick={showCauseOfError}
+                      />
+                    </div>
                   </div>
                   <div className="password">
                     <label htmlFor="password" className="l_password">
                       password
                     </label>
-                    <input type="password" name="password" placeholder="password"  />
-                    <span className="error">No error</span>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="password"
+                      autoComplete="new-password"
+                      onChange={password_change}
+                    />
+                    <div className="errorContainer">
+                      <span className="error" ref={error_password}>
+                        Not Valid
+                      </span>
+                      <HelpIcon
+                        className="helpIcon"
+                        name="password_qn"
+                        onClick={showCauseOfError}
+                      />
+                    </div>
                   </div>
                   <div className="email">
                     <label htmlFor="email" className="l_email">
                       Enter Email
                     </label>
-                    <input type="email" name="email" placeholder="email" />
-                    <span className="error">No error</span>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="email"
+                      onChange={email_change}
+                    />
+                    <div className="errorContainer">
+                      <span className="error" ref={error_email}>
+                        Not Valid
+                      </span>
+                      <HelpIcon
+                        className="helpIcon"
+                        name="email_qn"
+                        onClick={showCauseOfError}
+                      />
+                    </div>
                   </div>
                   <div className="contact_no">
                     <label htmlFor="number" className="l_c_n">
                       Enter contact number
                     </label>
-                    <input type="text" name="contact_no" placeholder="Contact No" />
-                    <span className="error">No error</span>
+                    <input
+                      type="number"
+                      name="contact_no"
+                      placeholder="Contact No"
+                      onChange={cno_change}
+                    />
+                    <div className="errorContainer">
+                      <span className="error" ref={error_cno}>
+                        Not Valid
+                      </span>
+                      <HelpIcon
+                        className="helpIcon"
+                        name="contactNo_qn"
+                        onClick={showCauseOfError}
+                      />
+                    </div>
                   </div>
                   <div className="desc">
                     <label htmlFor="textarea" className="l_desc">
@@ -299,13 +623,25 @@ const formSubmit = (e)=>{
                       rows="10"
                       placeholder="Write Something About You..."
                     ></textarea>
-                    <span className="error">No error</span>
+                    <span className="error"></span>
                   </div>
-                  <input type="file" style={{ display: "none" }} name="userPhoto" ref={ImageUpload}  onChange={PreviewProfileImage}/>
-                  <input type="submit" className="submitButton"/>
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    name="userPhoto"
+                    ref={ImageUpload}
+                    onChange={PreviewProfileImage}
+                  />
+                  <input type="submit" className="submitButton" />
                 </form>
               </div>
-              <div className="buttons"></div>
+            </div>
+            <div className="buttons" style={{ marginTop: "40px" }}>
+              <Link to="/Storage" style={{ textDecoration: "none" }}>
+                <Button variant="contained" color="primary">
+                  Log In
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
