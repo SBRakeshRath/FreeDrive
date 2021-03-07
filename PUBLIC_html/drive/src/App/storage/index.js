@@ -1,52 +1,50 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./index.scss";
 import axios from "axios";
-import { Redirect,Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
+import Loading from "./preloader";
 
 // import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Storage = (props) => {
-
-
-
   const form = useRef(null);
   // change the apiURL..>>>>>>>>>>>>>>>>>>>>>>>>
 
   let apiURL = "http://localhost/GoogleDrive/PUBLIC_html/phpBakend/login.php";
   //................>>>>>>>>>>
 
-
-
-
+  const [loading, isLoading] = useState(false);
 
   const [userData, newUserData] = useState({});
-  const [setCookie, nSetCookie] = useState(false);
   const [loggedInStatus, check] = useState(false);
-  const [keyCheckFunCall, incriment] = useState(0);
   const [LSC, ILSC] = useState(0);
   const CheckedLoginState = (name) => {
+    //checking if cookie is available or not
     var allCookie = document.cookie.split(";");
+    console.log(allCookie);
+    let ImpCookie = null;
     for (let index = 0; index < allCookie.length; index++) {
-      let element = allCookie[index].split("=");
-      if (name === element[0].trim()) {
-        ILSC(LSC + 1);
+      var cookies = allCookie[index].split("=");
+      if (name === cookies[0].trim()) ImpCookie = cookies;
+    }
+    console.log("ImpCookie" + ImpCookie);
+    //....
 
-        console.log("user token");
-        console.log(element[1].trim());
-        if (element[1].trim() !== "") {
+    if (ImpCookie !== null || sessionStorage.getItem(name) !== null) {
+      let userTOKEN = null;
+      ImpCookie !== null
+        ? (userTOKEN = ImpCookie[1].trim())
+        : (userTOKEN = sessionStorage.getItem(name));
+      if (userTOKEN !== null) {
+        const TokenChecker = async () => {
+          isLoading(true);
           console.log("userToken exist");
-          const TokenChecker = async () => {
-            console.log("hello");
-            console.log(element[1].trim());
-            // SendData{}
-            // let formData = new FormData();
-            // formData.append("section", "general");
-            // formData.append("action", "previewImg");
-            //..>> sending data to server in formdata function easy to use without json
-            let userDataToken = new FormData();
-            userDataToken.append("name", "Token_Check");
-            userDataToken.append("Token", element[1].trim());
-            console.log(userDataToken);
+          let userDataToken = new FormData();
+          userDataToken.append("name", "Token_Check");
+          userDataToken.append("Token", userTOKEN);
+          console.log(userDataToken);
+          try {
+            // isLoading(true);
 
             const config = {
               method: "POST",
@@ -58,54 +56,56 @@ const Storage = (props) => {
             const request = await axios(config);
             const response = request.data;
             console.log(response);
-
+            isLoading(false);
+            console.log("before");
             if (response.TokenAuth === true && response.error === false) {
               check(true);
             }
+          } catch (error) {
+            console.log(JSON.stringify(error));
+          }
+          console.log("loading response : " + loading);
+        };
 
-            // const Request =await axios.post('http://localhost/GoogleDrive/phpBakend/tokenChecker.php',{name:"anything"})
-            // console.log(Request.data);
-          };
-
-          TokenChecker();
-        }
+        TokenChecker();
+        // ILSC(LSC + 1);
       }
     }
   };
 
   const loginSubmit = (e) => {
     e.preventDefault();
-    console.log("submitted");
+    // console.log("submitted");
     ILSC(LSC + 1);
-    // console.log(loginDetails);
-    // console.log(new FormData(form));
-
     const data = new FormData(form.current);
-    console.log(data.entries);
-    for (var pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    // console.log(data.entries);
+    // for (var pair of data.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
     const sendPostRequest = async () => {
-      console.log(data);
-      const config = {
-        method: "POST",
-        url: apiURL,
-        data: data,
-        withCredentials: true,
-      };
-      const PostResp = await axios(config);
-      // console.log(PostResp.data);
-      const jsondata = JSON.parse(JSON.stringify(PostResp.data));
-      console.log(jsondata.login);
-      newUserData(jsondata);
+      isLoading(true);
+      try {
+        console.log(data);
+        const config = {
+          method: "POST",
+          url: apiURL,
+          data: data,
+          withCredentials: true,
+        };
+        const PostResp = await axios(config);
+        // console.log(PostResp.data);
+        const jsondata = JSON.parse(JSON.stringify(PostResp.data));
+        console.log(jsondata.login);
+        newUserData(jsondata);
+      } catch (error) {
+        console.log(JSON.stringify(error));
+      }
     };
-
-    // sendGetRequest();
     sendPostRequest();
   };
 
   useEffect(() => {
-    console.log(userData);
+    // console.log(userData);
     function setCookies(n, v, e) {
       let expiry = "";
       if (e) {
@@ -114,34 +114,27 @@ const Storage = (props) => {
         expiry = "; expires = " + date.toUTCString;
       }
       document.cookie = n + "=" + v + expiry + "; path=/";
-      nSetCookie(false);
     }
-    if (Object.keys(userData).length === 0) {
-      console.log("no login request");
-    } else {
+    if (Object.keys(userData).length !== 0) {
       console.log("login request send");
       if (userData.login === false) {
+        isLoading(false);
         alert("please enter correct username and password");
-      } if(userData.login ===true){
-        nSetCookie(true);
-        localStorage.setItem("Session", userData.session_id);
-        sessionStorage.setItem("lastname", "Smith");
-
-        console.log(userData.userToken);
-        localStorage.setItem("c_user", userData.userToken);
-        if (userData.userToken !== false) {
-          // document.cookie = "username=; expires=Thu, 01 Jan 2030 00:00:00 UTC; path=/;";
+      }
+      if (userData.login === true) {
+        if (userData.userTokenSet !== false) {
           setCookies("userToken", userData.userToken, 90);
+
           check(true);
-          
         } else {
+          sessionStorage.setItem("userToken", userData.userToken);
           document.cookie =
             "userToken =;expires = 01 jan 1970 00:00:00 UTC;path=/";
-            check(true);
+          check(true);
         }
-        console.log(new Date().setTime(new Date().getTime()));
+
         //alert must be at the bottom don't know why
-        alert("user found");
+        // alert("user found");
       }
     }
   }, [userData]);
@@ -150,16 +143,13 @@ const Storage = (props) => {
       CheckedLoginState("userToken");
     }
     ILSC(LSC + 1);
-  } else {
-    console.log("nope");
   }
-  if (loggedInStatus === true) {
-    // console.log("already login");
-    return <Redirect to="./Storage/Admin" />;
-  } else {
-    console.log("nothing");
-  }
+  // }
+  if (loggedInStatus === true) return <Redirect to="/Storage/Admin" />;
 
+  if (loading) {
+    return <Loading display="block" />;
+  }
 
   return (
     <>
@@ -178,14 +168,13 @@ const Storage = (props) => {
             </div>
             <h1>Admin Log-in</h1>
             <p className="levels l-user">Username</p>
-            
+
             <input
               type="text"
               className="username"
               id="username"
               name="username"
               autoComplete="username"
-              // onChange={inputChanged}
             />
             <p id="levels" className="levels l-pwd">
               Password
@@ -196,21 +185,25 @@ const Storage = (props) => {
               id="password"
               name="password"
               autoComplete="current-password"
-              // onChange={inputChanged}
             />
-            <input type="checkbox" name="Remember_me" value="on" />
-            <input type="hidden" />
+            <div className="Remember_me">
+              <input
+                type="checkbox"
+                name="Remember_me"
+                className="check_box"
+                value="on"
+              />
+              <p>Remember me</p>
+            </div>
+
+            {/* <input type="hidden" /> */}
             <input type="hidden" name="LoginForm" value="LoginForm" />
             {/* <input type="checkbox" class="checkbox" id="checkbox"> */}
             <button className="submit" id="submit" value="submit" name="submit">
               login
             </button>
           </form>
-          <Link
-            className="signup"
-            id="signup"
-            to="./storage/signup"
-          >
+          <Link className="signup" id="signup" to="./storage/signup">
             <button className="b-s"> signup</button>
           </Link>
         </section>

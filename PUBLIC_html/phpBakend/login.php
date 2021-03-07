@@ -106,6 +106,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (!mysqli_stmt_prepare($stmt, $sql)) {
                     echo ("Sql Statement Failed");
                 } else {
+                    $password_salt = "dev_SBRR";
+                    $password_salt = sha1(md5($password_salt));
+                    $password = sha1(md5($password.$password_salt));
                     mysqli_stmt_bind_param($stmt, "ss", $username, $password);
                     //run parameters in DataBase
                     mysqli_stmt_execute($stmt);
@@ -119,10 +122,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if (isset($_POST["Remember_me"])) {
                         // echo("on");
                         $userdata->userToken = $row["UserToken"];
+                        $userdata->userTokenSet = true;
                         // echo $result["UserToken"] ;
                         // $userdata->userToken = $result["UserToken"];
                     } else {
-                        $userdata->userToken = false;
+                        $userdata->userToken = $row["UserToken"];
+                        $userdata->userTokenSet = false;
                     }
 
                     session_start();
