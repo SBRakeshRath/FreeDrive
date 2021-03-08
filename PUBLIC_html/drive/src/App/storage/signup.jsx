@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import HelpIcon from "@material-ui/icons/Help";
 import Preloader from "./preloader";
 import { Redirect, Link } from "react-router-dom";
+import TokenChecker from "./TokenChecker";
 
 //material ui close
 // import AccountBoxIcon from "@material-ui/icons/AccountBox";
@@ -17,7 +18,10 @@ import femaleImage from "./images/SignUp page Images/Femaleuser.png";
 
 // const photo = true;
 
+
 const Signup = () => {
+  
+  // console.log(TokenChecker());
   let apiURL = "http://localhost/GoogleDrive/PUBLIC_html/phpBakend/signup.php";
   // const [apiResponse, updateApiResponse] = useState(null);
   // const [uploadImage, uploadImageCheck] = useState(false);
@@ -27,6 +31,7 @@ const Signup = () => {
   //   const file = this.innerHTML;
   //   console.log(file);
   // };
+  const[fetching , isFetching] = useState(false);
   const [isSuccess,updateIsSuccess] = useState({state:false,cause:""});
   const container = useRef(null);
   const shapes = useRef(null);
@@ -66,6 +71,9 @@ const Signup = () => {
   // }, [container]);
   const anotherWrapper = useRef(null);
   useEffect(() => {
+    
+    if(defaultPhotoWrapper === null) return;
+    if(defaultPhotoWrapper.current === null) return;
     const defaultPhotoWrapperStyle = defaultPhotoWrapper.current.style;
     const responsiveProfilePhoto = () => {
       if (anotherWrapper.current === null) return;
@@ -98,7 +106,7 @@ const Signup = () => {
       backgroundShapeArrangement();
       backgroundShapeArrangement();
     });
-  }, [defaultPhotoWrapper, anotherWrapper]);
+  });
 
   //....>>>>>>Profile Image Handlers
 
@@ -214,6 +222,7 @@ const Signup = () => {
   const sendPostRequest = async (data) => {
     // console.log(preloader);
     update_preloader("block");
+    isFetching(true);
     try {
       console.log("sendPostRequest");
       const config = {
@@ -234,6 +243,7 @@ const Signup = () => {
       console.log(JSON.stringify(error));
       alert("oops! something went wrong ");
       update_preloader("none");
+      isFetching(false);
     }
     // update_preloader("none");
   };
@@ -249,21 +259,7 @@ const Signup = () => {
     ) {
       e.preventDefault();
       const data = new FormData(form.current);
-      // console.log(data);
-      // console.log(data.entries);
-      // for (var pair of data.entries()) {
-      //   console.log(pair[0] + ", " + pair[1]);
-      // }
       sendPostRequest(data);
-      // update_form_format_error({
-      //   final_format: false,
-      //   first_name_format: false,
-      //   last_name_format: false,
-      //   email_format: false,
-      //   cno_format: false,
-      //   password_format: false,
-      //   username_format: false,
-      // });
     } else {
       alert("please Enter all the valid credentials");
       e.preventDefault();
@@ -417,6 +413,22 @@ const Signup = () => {
     
     return <Redirect to="/Storage/Admin" />;
   }
+
+
+  console.log("before TokenChecker");
+  const TokenCheckerResp = TokenChecker();
+  if(TokenCheckerResp.isLoading || fetching){
+    return (<><Preloader /></>);
+  }
+  if(TokenCheckerResp.loggedIn){
+    return <Redirect to="/Storage/Admin" />
+  }
+
+  
+  
+  console.log("after TokenChecker");
+  // return (<h1>Hello</h1>
+  //   )
 
   return (
     <>
