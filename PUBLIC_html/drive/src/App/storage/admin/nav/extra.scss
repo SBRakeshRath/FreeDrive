@@ -1,0 +1,36 @@
+.AdminPage {
+  .desktopNav {
+    .extra {
+      width: 170px;
+      border-left: 1px solid red;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      .user {
+        width: 50px;
+        height: 50px;
+        .circle {
+          width: 100%;
+          height: 100%;
+          margin: auto;
+          background-color: rgb(243, 60, 60);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          .letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin: auto;
+            h1 {
+              text-align: center;
+              color: #f2f2f2;
+            }
+          }
+        }
+      }
+    }
+  }
+}
