@@ -56,8 +56,15 @@ const TokenChecker = () => {
           }
         };
         TokenChecker();
+      } 
+      else {
+        UpdateTokenResponse({
+          isLoading: false,
+          loggedIn: false,
+        });
       }
-    }else{
+    } 
+    else {
       UpdateTokenResponse({
         isLoading: false,
         loggedIn: false,
