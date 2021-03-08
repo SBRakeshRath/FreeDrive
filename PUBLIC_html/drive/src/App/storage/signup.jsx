@@ -415,7 +415,7 @@ const Signup = () => {
   }
 
 
-  console.log("before TokenChecker");
+  // console.log("before TokenChecker");
   const TokenCheckerResp = TokenChecker();
   if(TokenCheckerResp.isLoading || fetching){
     return (<><Preloader /></>);
@@ -426,7 +426,7 @@ const Signup = () => {
 
   
   
-  console.log("after TokenChecker");
+  // console.log("after TokenChecker");
   // return (<h1>Hello</h1>
   //   )
 
