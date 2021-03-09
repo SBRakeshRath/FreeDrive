@@ -1,7 +1,8 @@
 .AdminPage {
   .desktopNav {
     .middle {
-      width: 100%;
+      // width: 100%;
+      flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -10,7 +11,7 @@
         display: flex;
         align-items: center;
         // justify-content: space-evenly;
-        background-color: #f9cfcf;
+        background-color: #f9cfcf70;
         height: 100%;
         border-radius: 7px;
         margin: 0 10px;
@@ -26,12 +27,17 @@
         .searchIcon,
         .crossButton {
           padding: 5px;
-          background-color: #c7c7c7;
+          // background-color: #c7c7c7;
           border-radius: 50%;
           height: 35px;
           width: 35px;
           cursor: pointer;
           margin: 0px 25px;
+          color: #626259;
+        }
+        .searchIcon:hover,
+        .crossButton:hover {
+          background-color: #c7c7c7;
         }
       }
       .others {

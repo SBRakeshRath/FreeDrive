@@ -3,7 +3,8 @@ import GoogleDriveImage from "./DriveImage";
 import Middle from "./middle.js";
 import "./Desktopnav.scss";
 import "./logo.scss";
-import Extra from "./extra"
+import Extra from "./extra";
+import { UserDatacontextProvider } from "./userDetailscontext";
 
 export default function DesktopNav() {
   return (
@@ -20,7 +21,11 @@ export default function DesktopNav() {
         <div className="middle">
           <Middle />
         </div>
-        <div className="extra"><Extra /></div>
+        <div className="extra">
+          <UserDatacontextProvider>
+            <Extra />
+          </UserDatacontextProvider>
+        </div>
       </nav>
     </>
   );

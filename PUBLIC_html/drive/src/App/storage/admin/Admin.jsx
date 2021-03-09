@@ -3,6 +3,8 @@ import TokenChecker from "../TokenChecker";
 import Preloader from "../preloader";
 import { Redirect } from "react-router-dom";
 import Nav from "./nav/nav";
+import Left from "./Left/left"
+import Main from "./FileDisplayComponents/Main"
 import "./Admin.scss";
 
 const Admin = () => {
@@ -22,6 +24,12 @@ const Admin = () => {
     <>
       <div className="AdminPage">
         <Nav />
+        <div className="left">
+          <Left />
+        </div>
+        <div className="mainContainer">
+          <Main />
+        </div>
       </div>
     </>
   );

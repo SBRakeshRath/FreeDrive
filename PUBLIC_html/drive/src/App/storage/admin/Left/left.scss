@@ -1,0 +1,75 @@
+.AdminPage {
+  .left {
+    .container {
+      .buttons {
+        padding-bottom: 16px;
+        border-bottom: 3px solid #e4cccc;
+        padding-left: 25px;
+        ul {
+          list-style: none;
+          li {
+            display: flex;
+            height: 40px;
+            margin: 10px 0;
+            cursor: pointer;
+            align-items: center;
+            .icon {
+              margin-right: 13px;
+              align-items: center;
+              display: flex;
+            }
+          }
+        }
+      }
+      .storageInfo {
+        padding-left: 25px;
+        padding-top: 25px;
+        .text {
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+          .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+          }
+        }
+        .bar-container {
+          height: 6px;
+          background-color: #e2bebe;
+          width: 82%;
+          border-radius: 5px;
+          margin-bottom: 8px;
+          overflow: hidden;
+          .bar {
+            height: 100%;
+            background-color: #d80909;
+            width: 90%;
+            border-radius: 50%;
+          }
+        }
+        p {
+          margin-bottom: 5px;
+        }
+      }
+      .button {
+        width: 100%;
+        margin-top: 27px;
+        height: 40px;
+        /* background-color: red; */
+        display: flex;
+        align-items: center;
+        // justify-content: center;
+        a {
+          padding: 6px 12px;
+          border: 2px solid #bbbbe7;
+          text-align: center;
+          text-decoration: none;
+          color: #cd1a1a;
+          background-color: aqua;
+        }
+      }
+    }
+  }
+}
