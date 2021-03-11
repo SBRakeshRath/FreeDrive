@@ -1,9 +1,11 @@
-.AdminPage{
-    .mainContainer {
-        section{
-            .filePath{
-                padding: 5px;
-            }
-        }
+.AdminPage {
+  .mainContainer {
+    section {
+      .filePath {
+        // padding: 5px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #f09f9f;
+      }
     }
+  }
 }

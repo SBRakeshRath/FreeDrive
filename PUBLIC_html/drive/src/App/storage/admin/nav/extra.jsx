@@ -1,5 +1,5 @@
 import "./extra.scss";
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import { userDatacontext } from "./userDetailscontext";
 export default function Extra() {
   // const userData = useContext(userDatacontext).userData;
@@ -10,6 +10,7 @@ export default function Extra() {
   setTimeout(() =>{
     setUserData({firstName: "C"});
   },3000);
+  // console.log(userData);
   return (
     <>
       
