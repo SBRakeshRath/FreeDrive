@@ -6,11 +6,11 @@ import Nav from "./nav/nav";
 import Left from "./Left/left";
 import Main from "./FileDisplayComponents/Main";
 import "./Admin.scss";
-import OverLays from "./overLays/overlay";
+
 import {
   OverlayContextProvider,
   // OverlayContext,
-} from "./overLays/overlaysContext.js";
+} from "./ContextMenuContainer/overlaysContext.js";
 
 const Admin = () => {
   // const { overlays, SetOverlays } = useContext(OverlayContext);
@@ -31,7 +31,7 @@ const Admin = () => {
     <>
       <OverlayContextProvider>
         <div className="AdminPage">
-          <OverLays />
+          
           {/* </OverlayContextProvider> */}
 
           <Nav />

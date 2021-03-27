@@ -18,10 +18,14 @@ import femaleImage from "./images/SignUp page Images/Femaleuser.png";
 
 // const photo = true;
 
-
 const Signup = () => {
-  
   // console.log(TokenChecker());
+  const [fetching, isFetching] = useState(false);
+  const [isSuccess, updateIsSuccess] = useState(() => {
+    return { state: false,showSmallMessage:false , cause: "" };
+  });
+  
+  const [APIResponses, updateResponse] = useState(null);
   let apiURL = "http://localhost/GoogleDrive/PUBLIC_html/phpBakend/signup.php";
   // const [apiResponse, updateApiResponse] = useState(null);
   // const [uploadImage, uploadImageCheck] = useState(false);
@@ -31,14 +35,13 @@ const Signup = () => {
   //   const file = this.innerHTML;
   //   console.log(file);
   // };
-  const[fetching , isFetching] = useState(false);
-  const [isSuccess,updateIsSuccess] = useState({state:false,cause:""});
+
   const container = useRef(null);
   const shapes = useRef(null);
   const defaultPhotoWrapper = useRef(null);
   const backgroundShapeArrangement = () => {
     if (container !== null) {
-      if(shapes === null) return;
+      if (shapes === null) return;
       if (shapes.current === null) return;
       const ShapeStyle = shapes.current.children;
       // ShapeStyle[0].style.marginLeft = style.marginLeft;
@@ -70,38 +73,38 @@ const Signup = () => {
   //   backgroundShapeArrangement();
   // }, [container]);
   const anotherWrapper = useRef(null);
-  useEffect(() => {
-    
-    if(defaultPhotoWrapper === null) return;
-    if(defaultPhotoWrapper.current === null) return;
+  const responsiveProfilePhoto = () => {
+    if (anotherWrapper.current === null) return;
     const defaultPhotoWrapperStyle = defaultPhotoWrapper.current.style;
-    const responsiveProfilePhoto = () => {
-      if (anotherWrapper.current === null) return;
-      const anotherWrapperStyle = getComputedStyle(anotherWrapper.current);
-      const width = anotherWrapperStyle.width;
-      const height = anotherWrapperStyle.height;
-      // console.log(width + "   "+ height)
-      if (parseFloat(width) >= parseFloat(height)) {
-        // console.log("width is longer than height");
-        if (parseFloat(width) > parseFloat(height)) {
-          // console.log("width is greater than height");
-          defaultPhotoWrapperStyle.width = height;
-          defaultPhotoWrapperStyle.height = height;
-        } else {
-          // console.log("width is equal to height");
-          defaultPhotoWrapperStyle.width = height;
-          defaultPhotoWrapperStyle.height = height;
-        }
+    const anotherWrapperStyle = getComputedStyle(anotherWrapper.current);
+    const width = anotherWrapperStyle.width;
+    const height = anotherWrapperStyle.height;
+    // console.log(width + "   "+ height)
+    if (parseFloat(width) >= parseFloat(height)) {
+      // console.log("width is longer than height");
+      if (parseFloat(width) > parseFloat(height)) {
+        // console.log("width is greater than height");
+        defaultPhotoWrapperStyle.width = height;
+        defaultPhotoWrapperStyle.height = height;
       } else {
-        // console.log("height is longer than width");
-        defaultPhotoWrapperStyle.width = width;
-        defaultPhotoWrapperStyle.height = width;
+        // console.log("width is equal to height");
+        defaultPhotoWrapperStyle.width = height;
+        defaultPhotoWrapperStyle.height = height;
       }
-    };
+    } else {
+      // console.log("height is longer than width");
+      defaultPhotoWrapperStyle.width = width;
+      defaultPhotoWrapperStyle.height = width;
+    }
+  };
+  useEffect(() => {
+    if (defaultPhotoWrapper === null) return;
+    if (defaultPhotoWrapper.current === null) return;
+
     responsiveProfilePhoto();
     backgroundShapeArrangement();
     window.addEventListener("resize", () => {
-      console.log("resized");
+      // console.log("resized");
       responsiveProfilePhoto();
       backgroundShapeArrangement();
       backgroundShapeArrangement();
@@ -127,7 +130,7 @@ const Signup = () => {
         return;
       }
       return (
-        console.log(URL.createObjectURL(e.target.files[0])),
+        // console.log(URL.createObjectURL(e.target.files[0])),
         newProfileImgSrc(URL.createObjectURL(e.target.files[0]))
       );
     } else {
@@ -155,6 +158,9 @@ const Signup = () => {
               onClick={() => {
                 MessageContainer.current.style.visibility = "hidden";
                 update_preloader("none");
+                if(entireSignupPage != null || entireSignupPage.current != null){
+                  entireSignupPage.current.style.height = "";
+                }
               }}
             />
           </div>
@@ -166,6 +172,7 @@ const Signup = () => {
   //
   const MessageContainer = useRef(null);
   const MessageTextBox = useRef(null);
+  const entireSignupPage = useRef(null);
 
   const Alert = () => {
     // const ChangeImage = () => {
@@ -219,10 +226,12 @@ const Signup = () => {
   // const preloader = useRef(null);
   const [preloader, update_preloader] = useState("none");
   // let preloader = ()
+  // let mounted = true;
   const sendPostRequest = async (data) => {
     // console.log(preloader);
     update_preloader("block");
     isFetching(true);
+
     try {
       console.log("sendPostRequest");
       const config = {
@@ -235,17 +244,15 @@ const Signup = () => {
       const req = await axios(config);
 
       const jsondata = JSON.parse(JSON.stringify(req.data));
-      // updateApiResponse(jsondata);
-      ResponseValidation(jsondata);
-      
-      console.log(jsondata.ImportantResponse[0].signup);
+      // console.log(jsondata);
+      updateResponse(jsondata);
     } catch (error) {
-      console.log(JSON.stringify(error));
-      alert("oops! something went wrong ");
-      update_preloader("none");
+      // console.log(JSON.stringify(error));
+      // alert("oops! something went wrong ");
+      // update_preloader("none");
       isFetching(false);
     }
-    // update_preloader("none");
+    // return ()=> mounted = false
   };
   const form = useRef(null);
   const formSubmit = (e) => {
@@ -259,7 +266,10 @@ const Signup = () => {
     ) {
       e.preventDefault();
       const data = new FormData(form.current);
+      // if(isdMounted){
       sendPostRequest(data);
+      // }
+      // mounted(false);
     } else {
       alert("please Enter all the valid credentials");
       e.preventDefault();
@@ -311,7 +321,7 @@ const Signup = () => {
   const error_email = useRef(null);
   const email_change = (e) => {
     const email_text = e.target.value;
-    console.log(email_text);
+    // console.log(email_text);
     if (email_text.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/)) {
       error_email.current.style.visibility = "hidden";
       update_form_format_error({ ...form_format_error, email_format: true });
@@ -370,70 +380,118 @@ const Signup = () => {
     LastName_qn:
       "<p1> last name can only be combination of letter and greater than 1 letter and less than 30 letter</p1>",
   };
+
   const showSmallMessage = (message) => {
+    if (MessageContainer == null || MessageContainer.current == null) {
+      return;
+    }
+    // console.log("show small message");
     MessageContainer.current.style.visibility = "visible";
     MessageTextBox.current.innerHTML = message;
   };
-  const showCauseOfError = (e) => {
-    const keyId = e.currentTarget.getAttribute("name");
-    const message = allFormats[keyId];
-    console.log(keyId);
-    console.log(message);
-    //const MessageContainer = useRef(null);
-    //const MessageTextBox = useRef(null);
-    showSmallMessage(message);
-  };
-  //redirect header
-  function ResponseValidation(apiResponse) {
-    if (apiResponse !== null) {
-      if (apiResponse.ImportantResponse[0].signup) {
-        console.log("M ERROR");
-        updateIsSuccess({state:true,cause:"Successfully Registered"});
-        // return <Redirect to="/Storage" />;
-      } else if (apiResponse.ImportantResponse[0].signup === false) {
-        console.log(apiResponse.ImportantResponse[0].AvailableContactNumber);
-        console.log(apiResponse.ImportantResponse[0]);
-        let cause = "oops! something went wrong";
-        if (apiResponse.ImportantResponse[0].AvailableContactNumber) {
-          cause = "This contact n0 is already present";
-          showSmallMessage(cause);
-        } else if (apiResponse.ImportantResponse[0].AvailableEmail) {
-          cause = "This email is already present";
-          console.log(cause);
-          showSmallMessage(cause);
-        } else if (apiResponse.ImportantResponse[0].AvailableUsername) {
-          cause = "This username is not available";
-          showSmallMessage(cause);
+  useEffect(() => {
+    // console.log(isSuccess);
+    if (isSuccess.showSmallMessage) {
+      if (MessageContainer != null || MessageContainer.current != null) {
+        MessageContainer.current.style.visibility = "visible";
+        MessageTextBox.current.innerHTML = isSuccess.cause;
+        if(entireSignupPage != null || entireSignupPage.current!=null) {
+          entireSignupPage.current.style.height ="100%";
         }
       }
     }
+  }, [isSuccess]);
+
+  const showCauseOfError = (e) => {
+    const keyId = e.currentTarget.getAttribute("name");
+    const message = allFormats[keyId];
+    // console.log(keyId);
+    // console.log(message);
+    showSmallMessage(message);
+  };
+  //redirect header
+  const ResponseValidation = (apiResponse) => {
+    let updateIsSuccessState = false,
+    updateIsSuccessshowSmallMessage = false,
+      updateIsSuccessCause = "ho ho";
+    if (apiResponse !== null) {
+      if (apiResponse.ImportantResponse[0].signup) {
+        // console.log("M ERROR");
+        updateIsSuccessState = true;
+        updateIsSuccessCause = "Successfully Registered";
+
+        // console.log("terror");
+        // return <Redirect to="/Storage" />;
+      } else if (apiResponse.ImportantResponse[0].signup === false) {
+        // console.log(apiResponse.ImportantResponse[0].AvailableContactNumber);
+        // console.log(apiResponse.ImportantResponse[0]);
+        updateIsSuccessCause = "oops! something went wrong";
+        if (apiResponse.ImportantResponse[0].AvailableContactNumber) {
+          updateIsSuccessCause = "This contact number is already present";
+          // console.log(updateIsSuccessCause);
+          updateIsSuccessshowSmallMessage = true;
+          isFetching(false);
+          showSmallMessage(updateIsSuccessCause);
+        } else if (apiResponse.ImportantResponse[0].AvailableEmail) {
+          updateIsSuccessCause = "This email is already present";
+          updateIsSuccessshowSmallMessage = true;
+          isFetching(false);
+          // console.log(cause);
+          showSmallMessage(updateIsSuccessCause);
+        } else if (apiResponse.ImportantResponse[0].AvailableUsername) {
+          updateIsSuccessCause = "This username is not available";
+          updateIsSuccessshowSmallMessage = true;
+          isFetching(false);
+          showSmallMessage(updateIsSuccessCause);
+        }
+      }
+    }
+    // console.log("cause : " + updateIsSuccessCause);
+    updateIsSuccess((prev) => {
+      return {
+        ...prev,
+        state: updateIsSuccessState,
+        cause: updateIsSuccessCause,
+        showSmallMessage:updateIsSuccessshowSmallMessage
+      };
+    });
+    // console.log("cause");
+    // console.log(isSuccess);
+  };
+  if (APIResponses != null) {
+    ResponseValidation(APIResponses);
+    updateResponse(null);
   }
-  if(isSuccess.state){
-    console.log("state" +isSuccess.state);
-    
+  const TokenCheckerResp = TokenChecker();
+  // console.log("resp");
+  // console.log(TokenCheckerResp);
+  if (isSuccess.state) {
+    console.log("is success");
+    return <Redirect to="/Storage" />;
+  }
+
+  // console.log("before TokenChecker");
+  else if (TokenCheckerResp.isLoading || fetching) {
+    console.log("TokenChecking");
+    return (
+      <>
+        <Preloader />
+      </>
+    );
+  }
+  if (TokenCheckerResp.loggedIn) {
+    // console.log("TokenCheck");
     return <Redirect to="/Storage/Admin" />;
   }
 
-
-  // console.log("before TokenChecker");
-  const TokenCheckerResp = TokenChecker();
-  if(TokenCheckerResp.isLoading || fetching){
-    return (<><Preloader /></>);
-  }
-  if(TokenCheckerResp.loggedIn){
-    return <Redirect to="/Storage/Admin" />
-  }
-
-  
-  
   // console.log("after TokenChecker");
   // return (<h1>Hello</h1>
   //   )
 
   return (
     <>
-      <div className="entireSignupPage">
-        <Preloader display={preloader} />
+      <div className="entireSignupPage" ref = {entireSignupPage}>
+        {/* <Preloader display={preloader} /> */}
         <Alert />
         <Message style={{ visibility: "hidden" }} />
         <div className="signupBackgroundShapes">
@@ -478,7 +536,7 @@ const Signup = () => {
                 </div>
               </div>
               <div className="form">
-                <form ref={form} onSubmit={formSubmit} autoComplete= "on">
+                <form ref={form} onSubmit={formSubmit} autoComplete="on">
                   <input type="hidden" name="SignUPForm" value="SignUPForm" />
                   <div className="name">
                     <div className="fName">
@@ -547,7 +605,7 @@ const Signup = () => {
                       name="username"
                       placeholder="username"
                       onChange={username_change}
-                      autoComplete = "username"
+                      autoComplete="username"
                     />
                     <div className="errorContainer">
                       <span className="error" ref={error_username}>

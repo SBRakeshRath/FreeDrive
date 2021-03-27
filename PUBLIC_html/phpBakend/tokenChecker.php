@@ -6,7 +6,7 @@ header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers:Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true");
 
-echo("Hello");
+// echo("Hello");
 class TokenChecker
 {
     public $TokenAuth;

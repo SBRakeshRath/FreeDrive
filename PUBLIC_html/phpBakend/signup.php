@@ -36,18 +36,6 @@ if ($_POST) {
         // echo ("\n connection established");
         $connection = true;
         if (isset($_POST["SignUPForm"])) {
-            // echo ("in signup Page");
-            // $fname = mysqli_real_escape_string($conn, $_POST['fname']);
-            // $lname = mysqli_real_escape_string($conn, $_POST['lname']);
-            // $username = mysqli_real_escape_string($conn, $_POST['username']);
-            // $password = mysqli_real_escape_string($conn, $_POST['password']);
-            // $email = mysqli_real_escape_string($conn, $_POST['email']);
-            // $cno = mysqli_real_escape_string($conn, $_POST['contact_no']);
-            // $about = mysqli_real_escape_string($conn, $_POST['description']);
-            //removing all unwanted slashes
-            // if(get_magic_quotes_gpc()){
-            //     echo("hello");
-            // }
             $fname = trim($_POST['fname']);
             $lname =  trim($_POST['lname']);
             $username =  trim($_POST['username']);
@@ -170,10 +158,9 @@ if ($_POST) {
                     }
 
                     $userTokenInDatabase = true;
+                    $serverTokenDB = true;
                     if ($userTokenInDatabase = true) {
-                        // echo("hello");
-                        // echo create_user_token();
-                        // echo($token);
+
                         for ($i = 0; $i < 5;) {
                             # code...
                             // echo $i;
@@ -192,14 +179,9 @@ if ($_POST) {
                                     $result = mysqli_stmt_get_result($statements);
                                     $row = mysqli_fetch_assoc($result);
                                     if ($row) {
-                                        // echo ("Contact no. is already in use");
                                         $userTokenInDatabase = true;
-                                        // return $userTokenInDatabase;
-                                        // echo ("true");
                                     } else {
                                         $userTokenInDatabase = false;
-                                        // return $userTokenInDatabase;
-                                        // echo ("false");
                                         $FinalUserToken = $token;
                                         break;
                                     }
@@ -221,8 +203,7 @@ if ($_POST) {
                             // echo ("username Check");
                             // $FinalUserToken = "ASDSADSAD";
                             $sql = "INSERT INTO `usersdeatail` ( `fName`, `lName`, `email`, `cno`, `username`, `password`, `UserToken`, `about` ) VALUES ( ? , ? , ? , ? , ? , ?, ?, ? )";
-                            // $sql = "SELECT * FROM `usersdeatail` WHERE `username` = ? AND `password` = ?";
-                            // $sql = "INSERT INTO `usersdeatail` (`fname`,`lName`) VALUES (?)";
+
 
                             $stmt = mysqli_stmt_init($conn);
                             if (isset($stmt)) {

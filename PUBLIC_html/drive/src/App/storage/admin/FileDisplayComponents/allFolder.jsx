@@ -2,15 +2,16 @@ import "./allfolder.scss";
 import FolderIcon from "@material-ui/icons/Folder";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import { useState, useContext } from "react";
-import { OverlayContext } from "./../overLays/overlaysContext";
+import { useState, useContext, useRef } from "react";
+import { OverlayContext } from "../ContextMenuContainer/overlaysContext";
+import ContextMenu from "../ContextMenuContainer/contextMenu";
 export default function AllFolder() {
   const [FolderAndFile, updateFolderANDFiles] = useState(() => {
     return [
       { name: "New Folder", id: "1", type: "folder" },
       { name: "New Folder", id: "2", type: "folder" },
       { name: "New Folder", id: "3", type: "folder" },
-      { name: "New file", id: "4", type: "file" },
+      { name: "New file", id: "1", type: "file" },
       { name: "New file", id: "5", type: "file" },
       { name: "New file", id: "6", type: "file" },
       { name: "New Folder", id: "7", type: "folder" },
@@ -23,34 +24,125 @@ export default function AllFolder() {
     files = FolderAndFile.filter((obj) => obj.type === "file");
   }
   //context .>>>>>>>>>>>>>>>>
-
-  const { overlays, SetOverlays } = useContext(OverlayContext);
-  // console.log(overlays);
-
-  //..>>>>>>>>>>>>>>>>
-  //prevented default right click
-  // document.addEventListener("contextmenu", (event) => {
-  //   event.preventDefault();
-  //   // const xPos = event.pageX + "px";
-  //   // const yPos = event.pageY + "px";
-  //   // console.log (xPos, yPos);
-  //   // SetOverlays((prev)=>{
-  //   //   return {...prev,marginTop:xPos,marginLeft:yPos}
-  //   // })
-  // });
-  //
-  //custom Right click for Files
+  const AllFolderRefs = useRef(null);
+  let posX = 0;
+  let posY = 0;
+  let offsetTop = 0,
+    offsetLeft = 0;
+  function getMousePosition(e) {
+    if (AllFolderRefs !== null) {
+      offsetTop = AllFolderRefs.current.getBoundingClientRect().y - 5;
+      offsetLeft = AllFolderRefs.current.getBoundingClientRect().x - 15;
+    }
+    if (e.pageX || e.pageY) {
+      posX = e.pageX - offsetLeft;
+      posY = e.pageY - offsetTop;
+    } else if (e.clientX || e.clientY) {
+      posX =
+        e.clientX +
+        document.body.scrollLeft +
+        document.documentElement.scrollLeft -
+        offsetLeft;
+      posY =
+        e.clientY +
+        document.body.scrollTop +
+        document.documentElement.scrollTop -
+        offsetTop;
+    }
+  }
+  let divHeight = null,
+    divWidth = null;
+  function MainContainerHeightWidth() {
+    if (AllFolderRefs !== null) {
+      if (AllFolderRefs.current === null) return;
+      divHeight = AllFolderRefs.current.clientHeight;
+      divWidth = AllFolderRefs.current.clientWidth;
+    }
+  }
+  const closeContextMenu = () => {
+    SetOverlays(() => {
+      return { type: "hide" };
+    });
+  };
+  const { SetOverlays } = useContext(OverlayContext);
   const showFileOptions = (e) => {
     e.preventDefault();
-    console.log("rightClicked");
+    e.stopPropagation();
+    getMousePosition(e);
+    MainContainerHeightWidth();
+    let id;
+    if (e.currentTarget) {
+      id = e.currentTarget.getAttribute("data-index");
+    }
+
     SetOverlays((prev) => {
-      return {  visibility: "visible" };
+      return {
+        ...prev,
+        visibility: "visible",
+        id: id,
+        type: "file",
+        mouseX: posX,
+        mouseY: posY,
+        divHeight: divHeight,
+        divWidth: divWidth,
+      };
     });
-    console.log(overlays);
+    // console.log(overlays);
+  };
+  const showFolderOptions = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    getMousePosition(e);
+    MainContainerHeightWidth();
+    let id;
+    if (e.currentTarget) {
+      id = e.currentTarget.getAttribute("data-index");
+    }
+
+    SetOverlays((prev) => {
+      return {
+        ...prev,
+        visibility: "visible",
+        id: id,
+        type: "folder",
+        mouseX: posX,
+        mouseY: posY,
+        divHeight: divHeight,
+        divWidth: divWidth,
+      };
+    });
+  };
+  const newFolderOptions = (e) => {
+    e.preventDefault();
+    // console.log("context menu new");
+    getMousePosition(e);
+    MainContainerHeightWidth();
+    let id;
+    if (e.currentTarget) {
+      id = e.currentTarget.getAttribute("data-index");
+    }
+
+    SetOverlays((prev) => {
+      return {
+        ...prev,
+        visibility: "visible",
+        id: id,
+        type: "NewFolder",
+        mouseX: posX,
+        mouseY: posY,
+        divHeight: divHeight,
+        divWidth: divWidth,
+      };
+    });
   };
   const FolderMap = (props) => {
     return (
-      <div className="Folder" extra={props.extra} id={props.id}>
+      <div
+        className="Folder"
+        extra={props.extra}
+        id={props.id}
+        onContextMenu={showFolderOptions}
+      >
         <div className="star">
           <StarBorderIcon />
         </div>
@@ -67,6 +159,8 @@ export default function AllFolder() {
         className="file"
         extra={props.extra}
         id={props.id}
+        key={props.id}
+        data-index={props.id}
         onContextMenu={showFileOptions}
       >
         <div className="star">
@@ -79,14 +173,11 @@ export default function AllFolder() {
       </div>
     );
   };
-
-  console.log("folder list updated");
-  console.log(folders);
-  console.log(files);
   return (
     <>
-      <div className="AllFolder">
-        <section>
+      <div className="AllFolder" onClick={closeContextMenu} ref={AllFolderRefs}>
+        <ContextMenu />
+        <section onContextMenu={newFolderOptions}>
           <div className="folders">
             <FolderMap />
             {folders !== null ? (
@@ -112,7 +203,7 @@ export default function AllFolder() {
                     name={value.name}
                     key={value.id}
                     id={value.id}
-                    extra={{ type: value.type }}
+                    extra={value}
                   />
                 );
               })

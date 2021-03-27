@@ -29,7 +29,7 @@ const TokenChecker = () => {
         : (userTOKEN = sessionStorage.getItem(name));
 
       if (userTOKEN !== null) {
-        const TokenChecker = async () => {
+        const TokenCheckers = async () => {
           //form container
           let userDataToken = new FormData();
           userDataToken.append("name", "Token_Check");
@@ -46,6 +46,9 @@ const TokenChecker = () => {
             const response = request.data;
             // console.log(response.TokenAuth);
             console.log("response of token Checker");
+            console.log(response.TokenAuth);
+            console.log("token jsx")
+        console.log(TokenResponse);
             UpdateTokenResponse(() => {
               return {
                 isLoading: false,
@@ -61,28 +64,24 @@ const TokenChecker = () => {
             console.log(JSON.stringify(error));
           }
         };
-        TokenChecker();
-      } else {
+        TokenCheckers();
+        
+      } 
+      else {
         UpdateTokenResponse({
           isLoading: false,
           loggedIn: false,
           fetched: false,
         });
       }
-    } else {
+    } 
+    else {
       UpdateTokenResponse({
         isLoading: false,
         loggedIn: false,
         fetched: false,
       });
     }
-    // console.log(TokenResponse);
-
-    //for Testing purpose
-    // console.log("ImpCookie" + ImpCookie);
-
-    // console.log("console from TokenChecker page");
-    // console.log(TokenResponse);
   }
 
   return TokenResponse;

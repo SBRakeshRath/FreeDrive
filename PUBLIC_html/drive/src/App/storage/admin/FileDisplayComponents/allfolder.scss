@@ -8,8 +8,9 @@
         display: flex;
         padding-top: 10px;
         // align-items: center;
-        justify-content: space-evenly;
+        // justify-content: space-evenly;
         background-color: #fff;
+        // position:relative;
         section {
           // flex-direction: row;
           // justify-content: space-evenly;
@@ -51,12 +52,15 @@
             }
           }
           .files {
+            display: flex;
+            flex-wrap: wrap;
             .file {
               width: 150px;
               min-height: 110px;
               background-color: rgb(229, 210, 248);
               margin-bottom: 20px;
               position: relative;
+              margin-right: 20px;
               .star {
                 position: absolute;
                 width: 20px;

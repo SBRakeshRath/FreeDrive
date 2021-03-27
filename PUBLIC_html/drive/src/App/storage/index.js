@@ -145,7 +145,7 @@ const Storage = (props) => {
     ILSC(LSC + 1);
   }
   // }
-  if (loggedInStatus === true) return <Redirect to="/Storage/Admin" />;
+  if (loggedInStatus === true) return <Redirect to="/Storage/Admin" />
 
   if (loading) {
     return <Loading display="block" />;
