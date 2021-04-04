@@ -1,16 +1,21 @@
 .AdminPage {
   .fileOptions {
-    background-color: white;
+    background-color: #2729ffb3;
+    color: white;
     padding: 17px;
     display: inline-block;
     pointer-events: all !important;
     z-index: 5000;
+    border-radius: 24% 0;
 
     ul {
       list-style: none;
       min-width: 130px;
       li {
         padding: 2px 0px;
+        border-bottom: 1px solid white;
+        padding: 8px 0px;
+        cursor: pointer;
       }
     }
   }

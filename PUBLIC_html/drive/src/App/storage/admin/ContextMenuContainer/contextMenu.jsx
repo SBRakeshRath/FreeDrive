@@ -1,11 +1,13 @@
+import SupercontextMenu from "./SupercontextMenu";
 import NewFolderMaker from "./NewFolderMaker";
 import FileOptions from "./FileOptions";
-import FolderOptions from "./FileOptions";
+import FolderOptions from "./FolderOptions";
 import { OverlayContext } from "./overlaysContext";
 import React, { useContext } from "react";
 export default function Overlay(props) {
   const { overlays } = useContext(OverlayContext);
   let menu = null;
+  // console.log(overlays);
 
   if (overlays.type === "file") {
     menu = (
@@ -29,8 +31,17 @@ export default function Overlay(props) {
     );
   } else if (overlays.type === "NewFolder") {
     menu = (
-      <NewFolderMaker
+      <SupercontextMenu
         id={overlays.id}
+        mouseX={overlays.mouseX}
+        mouseY={overlays.mouseY}
+        divHeight={overlays.divHeight}
+        divWidth={overlays.divWidth}
+      />
+    );
+  } else if (overlays.type === "NewFolderMaker") {
+    menu = (
+      <NewFolderMaker
         mouseX={overlays.mouseX}
         mouseY={overlays.mouseY}
         divHeight={overlays.divHeight}

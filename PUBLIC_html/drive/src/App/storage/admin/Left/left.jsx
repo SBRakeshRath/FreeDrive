@@ -60,7 +60,7 @@ export default function Left() {
               10 GB of 15 GB used
           </p>
           <div className="button">
-            <Link>Buy Storage</Link>
+            <Link to = "/Storage/Admin">Buy Storage</Link>
           </div>
         </div>
       </div>

@@ -98,7 +98,7 @@ if ($_POST) {
                     //hashing the password after verifying its formats
                     $password_salt = "dev_SBRR";
                     $password_salt = sha1(md5($password_salt));
-                    $password = sha1(md5($password.$password_salt));
+                    $password = sha1(md5($password . $password_salt));
 
 
                     //already changed the password string
@@ -141,7 +141,6 @@ if ($_POST) {
                             $AvailableCno = true;
                         }
                     }
-
                     //create user tokens
 
 
@@ -183,6 +182,36 @@ if ($_POST) {
                                     } else {
                                         $userTokenInDatabase = false;
                                         $FinalUserToken = $token;
+                                        if (!$userTokenInDatabase) {
+                                            if ($serverTokenDB) {
+                                                for ($index = 0; $index < 5;) {
+                                                    # code...
+                                                    $serverToken = mt_rand(10000, 999999999999999);
+                                                    $prepareStatements = mysqli_stmt_init($conn);
+                                                    $sql22 = "SELECT * FROM `servertoken` WHERE `serverToken`= ? ";
+                                                    if (mysqli_stmt_prepare($prepareStatements, $sql22)) {
+                                                        // echo("found1");
+                                                        mysqli_stmt_bind_param($prepareStatements, 'i', $serverToken);
+                                                        if (mysqli_stmt_execute($prepareStatements)) {
+                                                            // echo("found2");
+                                                            $serverTokenResult = mysqli_stmt_get_result($prepareStatements);
+                                                            $fetchedRowServerToken = mysqli_fetch_assoc($serverTokenResult);
+                                                            if (!$fetchedRowServerToken) {
+                                                                // echo("found3");
+                                                                $serverTokenDB = false;
+                                                                break;
+                                                            } else {
+                                                                // echo ("fetchedRowServerToken");
+                                                            }
+                                                        } else {
+                                                            // echo ("mysqli_stmt_execute");
+                                                        }
+                                                    } else {
+                                                        // echo ("mysqli_stmt_prepare");
+                                                    }
+                                                }
+                                            }
+                                        }
                                         break;
                                     }
                                 }
@@ -190,41 +219,33 @@ if ($_POST) {
                         }
                     }
 
-                    if ($AvailableUsername == false && $AvailableEmail == false && $AvailableCno == false) {
+                    if ($AvailableUsername == false && $AvailableEmail == false && $AvailableCno == false && $serverTokenDB == false) {
                         $newDirRoot = "../../1213456ALLUSERS/";
                         // $newDirRoot = "";
                         clearstatcache();
                         $salt = "sbrakeshrath1234";
-                        $folderName = $FinalUserToken.$salt;
+                        $folderName = $serverToken . $salt;
+                        $folderName = sha1($folderName);
                         if (file_exists($newDirRoot . $folderName)) {
                             $signup = false;
-                            
                         } else {
                             // echo ("username Check");
                             // $FinalUserToken = "ASDSADSAD";
                             $sql = "INSERT INTO `usersdeatail` ( `fName`, `lName`, `email`, `cno`, `username`, `password`, `UserToken`, `about` ) VALUES ( ? , ? , ? , ? , ? , ?, ?, ? )";
-
+                            $sqlServer = "INSERT INTO `servertoken` (`userToken`, `serverToken`) VALUES (? ,?)";
 
                             $stmt = mysqli_stmt_init($conn);
-                            if (isset($stmt)) {
+                            $stmtServer = mysqli_stmt_init($conn);
+                            if (isset($stmt) ) {
                                 // echo("hh");
                             }
                             $prepare = mysqli_stmt_prepare($stmt, $sql);
-                            if ($prepare) {
+                            $prepareServer = mysqli_stmt_prepare($stmtServer,$sqlServer);
+                            if ($prepare && $prepareServer) {
                                 mysqli_stmt_bind_param($stmt, 'ssssssss', $fname, $lname, $email, $cno, $username, $password, $FinalUserToken, $about);
-                                // mysqli_stmt_bind_param($stmt,'s',$username);
-                                // mysqli_stmt_execute($stmt);
-                                // $InsertResult = mysqli_stmt_get_result($stmt);
-                                // echo ("prepare stmt");
-                                if (mysqli_stmt_execute($stmt)) {
-                                    $signup = true;
-                                    // echo ($username);
-                                    // echo ("\n");
-                                    // echo ($about);
+                                mysqli_stmt_bind_param($stmtServer , 'si',$FinalUserToken ,$serverToken);
+                                if (mysqli_stmt_execute($stmt) && mysqli_stmt_execute($stmtServer)) {
                                     mkdir($newDirRoot . $folderName);
-                                    // mkdir($username);
-                                    // create 2 Separate directories 1.root  to give user to access this
-                                    //& 2.to store user details.
                                     mkdir($newDirRoot . $folderName . "/userDetails");
                                     mkdir($newDirRoot . $folderName . "/root");
                                     $ImageUploadDir = $newDirRoot . $folderName . "/userDetails" . "/";
@@ -232,6 +253,7 @@ if ($_POST) {
                                     $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
                                     $ImageRename = "userPhoto" . "." . $imageFileType;
                                     $target_file = $ImageUploadDir . $ImageRename;
+                                    $signup = true;
                                     if (move_uploaded_file($_FILES["userPhoto"]["tmp_name"], $target_file)) {
                                         $signup = true;
                                     }
@@ -244,7 +266,9 @@ if ($_POST) {
                         }
                     }
                 }
-            }else{$userCredentialFormat = false;}
+            } else {
+                $userCredentialFormat = false;
+            }
             //Response  ...>>>>>>>
             $super_response_arr = array();
             $super_response_arr["ImportantResponse"] = array();
@@ -270,10 +294,10 @@ if ($_POST) {
             echo json_encode($super_response_arr);
 
             //.....>>>
+            mysqli_close($conn);
         }
+        
     }
-}else{include("./errorpage.html");}
-?>
-
-
-
+} else {
+    include("./errorpage.html");
+}

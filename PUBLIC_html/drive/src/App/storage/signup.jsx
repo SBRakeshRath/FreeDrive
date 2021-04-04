@@ -157,7 +157,7 @@ const Signup = () => {
             <CloseIcon
               onClick={() => {
                 MessageContainer.current.style.visibility = "hidden";
-                update_preloader("none");
+                // update_preloader("none");
                 if(entireSignupPage != null || entireSignupPage.current != null){
                   entireSignupPage.current.style.height = "";
                 }
@@ -224,12 +224,12 @@ const Signup = () => {
   // const preloader = useRef(null);
   // const preloader = React.createRef();
   // const preloader = useRef(null);
-  const [preloader, update_preloader] = useState("none");
+  // const [preloader, update_preloader] = useState("none");
   // let preloader = ()
   // let mounted = true;
   const sendPostRequest = async (data) => {
     // console.log(preloader);
-    update_preloader("block");
+    // update_preloader("block");
     isFetching(true);
 
     try {
@@ -244,7 +244,7 @@ const Signup = () => {
       const req = await axios(config);
 
       const jsondata = JSON.parse(JSON.stringify(req.data));
-      // console.log(jsondata);
+      console.log(jsondata);
       updateResponse(jsondata);
     } catch (error) {
       // console.log(JSON.stringify(error));

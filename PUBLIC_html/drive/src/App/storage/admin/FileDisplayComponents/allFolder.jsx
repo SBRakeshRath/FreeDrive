@@ -5,6 +5,7 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import { useState, useContext, useRef } from "react";
 import { OverlayContext } from "../ContextMenuContainer/overlaysContext";
 import ContextMenu from "../ContextMenuContainer/contextMenu";
+import { FileAndFolderContext } from "./fileAndFolderDetailscontext";
 export default function AllFolder() {
   const [FolderAndFile, updateFolderANDFiles] = useState(() => {
     return [
@@ -19,10 +20,22 @@ export default function AllFolder() {
   });
   let folders = null;
   let files = null;
-  if (FolderAndFile !== null) {
-    folders = FolderAndFile.filter((obj) => obj.type === "folder");
-    files = FolderAndFile.filter((obj) => obj.type === "file");
-  }
+  let loading = true;
+  // if (FolderAndFile != null) {
+  //   folders = FolderAndFile.filter((obj) => obj.type === "folder");
+  //   files = FolderAndFile.filter((obj) => obj.type === "file");
+  // }
+  const { fileAndFolder, RequiredOnesFileAndFolder } = useContext(
+    FileAndFolderContext
+  );
+  const [fileAndFolderData] = fileAndFolder;
+  const [requiredFileAndFolder] = RequiredOnesFileAndFolder;
+  // console.log("requiredFileAndFolder All folder");
+  // console.log(requiredFileAndFolder.folder);
+
+  files = requiredFileAndFolder.file;
+  folders = requiredFileAndFolder.folder;
+  loading = fileAndFolderData.loading;
   //context .>>>>>>>>>>>>>>>>
   const AllFolderRefs = useRef(null);
   let posX = 0;
@@ -30,7 +43,7 @@ export default function AllFolder() {
   let offsetTop = 0,
     offsetLeft = 0;
   function getMousePosition(e) {
-    if (AllFolderRefs !== null) {
+    if (AllFolderRefs != null) {
       offsetTop = AllFolderRefs.current.getBoundingClientRect().y - 5;
       offsetLeft = AllFolderRefs.current.getBoundingClientRect().x - 15;
     }
@@ -53,8 +66,8 @@ export default function AllFolder() {
   let divHeight = null,
     divWidth = null;
   function MainContainerHeightWidth() {
-    if (AllFolderRefs !== null) {
-      if (AllFolderRefs.current === null) return;
+    if (AllFolderRefs != null) {
+      if (AllFolderRefs.current == null) return;
       divHeight = AllFolderRefs.current.clientHeight;
       divWidth = AllFolderRefs.current.clientWidth;
     }
@@ -169,25 +182,33 @@ export default function AllFolder() {
         <div className="preview">
           <InsertDriveFileIcon />
         </div>
-        <div className="name">New File.txt</div>
+        <div className="name">{props.name}</div>
       </div>
     );
   };
+  if (loading) {
+    return (
+      <>
+        <p>Loading</p>
+      </>
+    );
+  }
   return (
     <>
       <div className="AllFolder" onClick={closeContextMenu} ref={AllFolderRefs}>
         <ContextMenu />
         <section onContextMenu={newFolderOptions}>
           <div className="folders">
-            <FolderMap />
-            {folders !== null ? (
-              folders.map((value, index) => {
+            {/* <FolderMap /> */}
+            {folders != null ? (
+              Object.values(folders).slice(0, 0).concat(Object.values(folders).slice(0+1, Object.values(folders).length)).map((value, index,arr) => {
+                // console.log(arr);
                 return (
                   <FolderMap
-                    name={value.name}
-                    key={value.id}
-                    id={value.id}
-                    extra={{ type: value.type }}
+                    name={value[0].folderName}
+                    key={value[0].folderid}
+                    id={value[0].folderid}
+                    // extra={{ type: value[0].type }}
                   />
                 );
               })
@@ -196,8 +217,10 @@ export default function AllFolder() {
             )}
           </div>
           <div className="files">
-            {files !== null ? (
-              files.map((value, index) => {
+            {files != null ? (
+              files.map((value, index ,arr) => {
+                // console.log("requiredFileAndFolder map");
+                // console.log(arr);
                 return (
                   <FileMap
                     name={value.name}

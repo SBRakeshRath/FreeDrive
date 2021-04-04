@@ -11,7 +11,7 @@ export default function DesktopNav() {
     <>
       <nav className="desktopNav">
         <div className="logo">
-          <Link>
+          <Link to="/Storage/Admin">
             <GoogleDriveImage />
             <div className="text">
               <p>Drive</p>

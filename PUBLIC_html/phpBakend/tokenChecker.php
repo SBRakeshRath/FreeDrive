@@ -50,8 +50,9 @@ if (isset($_POST["name"])) {
             $TokenChecker->TokenAuth = false;
             $TokenChecker->error = false;
         }
-
+        // sleep(2);
         echo (json_encode($TokenChecker));
+        mysqli_close($conn);
     }
 }
 

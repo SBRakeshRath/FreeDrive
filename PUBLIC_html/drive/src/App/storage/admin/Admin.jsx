@@ -6,6 +6,8 @@ import Nav from "./nav/nav";
 import Left from "./Left/left";
 import Main from "./FileDisplayComponents/Main";
 import "./Admin.scss";
+// import { FileAndFolderContextProvider } from "./FileDisplayComponents/fileAndFolderDetailscontext";
+// import fileAndFolderApiData from "./allContexts/fileAndFolderApi";
 
 import {
   OverlayContextProvider,
@@ -30,20 +32,21 @@ const Admin = () => {
   return (
     <>
       <OverlayContextProvider>
-        <div className="AdminPage">
-          
-          {/* </OverlayContextProvider> */}
-
-          <Nav />
-          <div className="left">
-            <Left />
-          </div>
-          <div className="mainContainer">
-            {/* <OverlayContextProvider> */}
-            <Main />
+        {/* <FileAndFolderContextProvider> */}
+          <div className="AdminPage">
             {/* </OverlayContextProvider> */}
+
+            <Nav />
+            <div className="left">
+              <Left />
+            </div>
+            <div className="mainContainer">
+              {/* <OverlayContextProvider> */}
+              <Main />
+              {/* </OverlayContextProvider> */}
+            </div>
           </div>
-        </div>
+        {/* </FileAndFolderContextProvider> */}
       </OverlayContextProvider>
     </>
   );

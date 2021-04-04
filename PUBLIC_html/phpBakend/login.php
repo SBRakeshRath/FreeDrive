@@ -186,6 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 echo (json_encode($TokenChecker));
+                mysqli_close($conn);
             }
         } else {
             echo ("\n U areNot allow to visit this page");
