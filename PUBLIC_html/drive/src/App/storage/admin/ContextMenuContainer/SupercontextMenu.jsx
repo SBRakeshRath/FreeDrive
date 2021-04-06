@@ -1,7 +1,7 @@
 import { useRef, useState, useLayoutEffect ,useContext  } from "react";
 import { OverlayContext } from "../ContextMenuContainer/overlaysContext";
 import positionContextMenu from "./positionContextMenu";
-import {FileAndFolderContext} from "./../FileDisplayComponents/fileAndFolderDetailscontext";
+// import {FileAndFolderContext} from "./../FileDisplayComponents/fileAndFolderDetailscontext";
 
 export default function NewFolderMaker(props) {
   const container = useRef(null);
@@ -16,8 +16,8 @@ export default function NewFolderMaker(props) {
 
 //newFolder Maker
 const { SetOverlays } = useContext(OverlayContext);
-const{RequiredOnesFileAndFolder} = useContext(FileAndFolderContext);
-const [requiredFileAndFolder] = RequiredOnesFileAndFolder;
+// const{RequiredOnesFileAndFolder} = useContext(FileAndFolderContext);
+// const [requiredFileAndFolder] = RequiredOnesFileAndFolder;
 const makeNewFolder = (e)=>{
   e.stopPropagation();
   // console.log("clicked");

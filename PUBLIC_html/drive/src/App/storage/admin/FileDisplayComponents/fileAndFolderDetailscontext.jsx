@@ -18,12 +18,12 @@ export const FileAndFolderContextProvider = ({ children }) => {
     };
   });
   const [path, updatePath] = useState(() => {
-    return [];
+    return ["folder", "foroot"];
   });
   const [requiredFileAndFolder, updateRequiredFileAndFolder] = useState(() => {
     return {
-      file: [],
-      folder: [],
+      previous:{file:[],folder:[]},
+      current: { file: [], folder: [] },
       currentFolderId: 0,
     };
   });
@@ -32,25 +32,27 @@ export const FileAndFolderContextProvider = ({ children }) => {
     let folder = fileAndFolderData;
     for (let i = 0; i < path.length; i++) {
       folder = folder[path[i]];
-
     }
     updateRequiredFileAndFolder((prev) => {
       return {
         ...prev,
-        file: fileAndFolderData.file,
-        // folder: fileAndFolderData.folder.fo1,
-        folder:folder,
+        // file: fileAndFolderData.file,
+        // // folder: fileAndFolderData.folder.fo1,
+        // folder: folder,
+        previous:{...prev.current},
+        current: { file: fileAndFolderData.file, folder: folder },
       };
     });
-  }, [fileAndFolderData,path]);
-  useLayoutEffect(()=>{
-    updatePath((prev)=>{
-      return ["folder","fo1"];
-    })
-  },[fileAndFolderData]);
+  }, [fileAndFolderData, path]);
+  useLayoutEffect(() => {
+    // updatePath((prev) => {
+    //   return ["folder", "foroot"];
+    // });
+  }, [fileAndFolderData]);
 
   const name = "fileAndFolderList";
   useEffect(() => {
+    console.log("hallo");
     if (fileAndFolderData.loading === true) {
       const ApiCall = async () => {
         let formData = new FormData();

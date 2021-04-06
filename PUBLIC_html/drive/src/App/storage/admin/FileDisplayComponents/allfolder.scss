@@ -17,6 +17,9 @@
           .folders {
             display: flex;
             flex-wrap: wrap;
+            // .Folder:active{
+            //   background-color:red;
+            // }
             .Folder {
               width: 150px;
               min-height: 110px;

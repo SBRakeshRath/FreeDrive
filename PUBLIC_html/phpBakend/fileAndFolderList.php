@@ -32,7 +32,10 @@ if (mysqli_stmt_prepare($FileStmt, $sqlFile)) {
     }
 
     // extra
-
+    $rootArray = [
+        "folderName"=>"root", "folderid"=>"root","folderPath"=>"root","previewPath"=>"root","userFolderPathName"=>"root","folderPathSequence"=>["root"]
+    ];
+    $superFolderArray[] = $rootArray;
     //Shorting
     $skeleton =array();
     if (count($superFolderArray) > 0) {

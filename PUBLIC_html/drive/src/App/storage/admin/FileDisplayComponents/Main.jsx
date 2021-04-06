@@ -3,8 +3,9 @@ import AllFolder from "./allFolder";
 import {useContext} from "react";
 import "./Main.scss";
 import {FileAndFolderContext} from "./fileAndFolderDetailscontext";
+// import {SelectedFolderFileProvider} from "./selectedFolderAndFile"
 export default function Main() {
-  const {fileAndFolderData} = useContext(FileAndFolderContext);
+  // const {fileAndFolderData} = useContext(FileAndFolderContext);
   // let loading = true;
   // loading = 
   // if(fileAndFolderData.loading){
@@ -15,10 +16,11 @@ export default function Main() {
   return (
     <>
       <section className="main">
-        {/* <FileAndFolderContextProvider> */}
+        
           <FilePath />
+          {/* <SelectedFolderFileProvider> */}
           <AllFolder />
-        {/* </FileAndFolderContextProvider> */}
+        {/* </SelectedFolderFileProvider> */}
       </section>
     </>
   );

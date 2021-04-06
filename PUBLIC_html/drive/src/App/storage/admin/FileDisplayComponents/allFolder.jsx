@@ -2,40 +2,103 @@ import "./allfolder.scss";
 import FolderIcon from "@material-ui/icons/Folder";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import { useState, useContext, useRef } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { OverlayContext } from "../ContextMenuContainer/overlaysContext";
 import ContextMenu from "../ContextMenuContainer/contextMenu";
 import { FileAndFolderContext } from "./fileAndFolderDetailscontext";
+import { SelectedFolderFile } from "./../FileDisplayComponents/selectedFolderAndFile";
 export default function AllFolder() {
-  const [FolderAndFile, updateFolderANDFiles] = useState(() => {
-    return [
-      { name: "New Folder", id: "1", type: "folder" },
-      { name: "New Folder", id: "2", type: "folder" },
-      { name: "New Folder", id: "3", type: "folder" },
-      { name: "New file", id: "1", type: "file" },
-      { name: "New file", id: "5", type: "file" },
-      { name: "New file", id: "6", type: "file" },
-      { name: "New Folder", id: "7", type: "folder" },
-    ];
-  });
+  const { selected, updateSelected } = useContext(SelectedFolderFile);
   let folders = null;
   let files = null;
   let loading = true;
-  // if (FolderAndFile != null) {
-  //   folders = FolderAndFile.filter((obj) => obj.type === "folder");
-  //   files = FolderAndFile.filter((obj) => obj.type === "file");
-  // }
+  const section = useRef(null);
+  const foldersRef = useRef(null);
   const { fileAndFolder, RequiredOnesFileAndFolder } = useContext(
     FileAndFolderContext
   );
   const [fileAndFolderData] = fileAndFolder;
   const [requiredFileAndFolder] = RequiredOnesFileAndFolder;
-  // console.log("requiredFileAndFolder All folder");
-  // console.log(requiredFileAndFolder.folder);
-
-  files = requiredFileAndFolder.file;
-  folders = requiredFileAndFolder.folder;
+  // console.log("requiredFileAndFolder");
+  // console.log(requiredFileAndFolder);
+  let previousFiles = requiredFileAndFolder.previous.file;
+  let previousFolders = requiredFileAndFolder.previous.folder;
+  files = requiredFileAndFolder.current.file;
+  folders = requiredFileAndFolder.current.folder;
   loading = fileAndFolderData.loading;
+  let FolderArray = [],
+    PFolderArray = undefined;
+    if(previousFolders != null && typeof previousFolders !=="undefined"){
+      previousFolders = Object.values(previousFolders)
+      .slice(0, 0)
+      .concat(
+        Object.values(previousFolders).slice(0 + 1, Object.values(previousFolders).length)
+      );
+    }
+    let NpreviousFolders = [];
+    if (Array.isArray(previousFolders)){
+      // console.log("is Array")
+      previousFolders.forEach((el)=>{
+        NpreviousFolders = [...NpreviousFolders, el[0]];
+      })
+    }
+  if (folders != null) {
+    PFolderArray = Object.values(folders)
+      .slice(0, 0)
+      .concat(
+        Object.values(folders).slice(0 + 1, Object.values(folders).length)
+      );
+  }
+  if (Array.isArray(PFolderArray)) {
+    PFolderArray.forEach((el) => {
+      FolderArray = [...FolderArray, el[0]];
+    });
+  }
+  //check changed folders
+  // console.log(selected);
+  useEffect(() => {
+    if (
+      typeof previousFolders !== "undefined" &&
+      previousFolders !== null &&
+      typeof folders !== "undefined" &&
+      folders !== null
+    ) {
+      console.log("updated");
+      let newFolder = [];
+      if(Array.isArray(FolderArray) && Array.isArray(NpreviousFolders)){
+        console.log("array");
+        if(FolderArray === NpreviousFolders){
+          console.log("matched");
+        }
+
+        let NFolderArray = []
+        FolderArray.forEach((elem)=>{
+          NFolderArray = [...NFolderArray,JSON.stringify(elem)]
+        });
+        let  NNpreviousFolders = [];
+        NpreviousFolders.forEach((elem)=>{
+          NNpreviousFolders = [...NNpreviousFolders,JSON.stringify(elem)]
+        });
+        var difference = NFolderArray.filter(x => !NNpreviousFolders.includes(x));
+        if(Object.entries(difference).length > 0){
+        difference.forEach(el=>{
+          newFolder = [...newFolder,JSON.parse(el).folderid.toString()]
+        })
+        console.log(newFolder);
+        }
+      }
+      if(newFolder !== []){
+        updateSelected((prev) => {
+          return { folder: newFolder, file: [] };
+        });
+      }
+    }
+  }, [requiredFileAndFolder]);
+  // console.log("changed folders");
+
+  // useEffect(()=>{
+  //   console.log(foldersRef.current.children)
+  // })
   //context .>>>>>>>>>>>>>>>>
   const AllFolderRefs = useRef(null);
   let posX = 0;
@@ -73,6 +136,9 @@ export default function AllFolder() {
     }
   }
   const closeContextMenu = () => {
+    updateSelected((prev) => {
+      return { folder: [], file: [] };
+    });
     SetOverlays(() => {
       return { type: "hide" };
     });
@@ -83,6 +149,7 @@ export default function AllFolder() {
     e.stopPropagation();
     getMousePosition(e);
     MainContainerHeightWidth();
+
     let id;
     if (e.currentTarget) {
       id = e.currentTarget.getAttribute("data-index");
@@ -100,16 +167,20 @@ export default function AllFolder() {
         divWidth: divWidth,
       };
     });
-    // console.log(overlays);
   };
-  const showFolderOptions = (e) => {
+  const showFolderOptions = (e, key) => {
     e.preventDefault();
     e.stopPropagation();
     getMousePosition(e);
     MainContainerHeightWidth();
+    updateSelected((prev) => {
+      return { folder: [key.toString()], file: [...prev.file] };
+    });
+    // console.log(key);
     let id;
     if (e.currentTarget) {
-      id = e.currentTarget.getAttribute("data-index");
+      id = e.currentTarget.getAttribute("selected-div");
+      // console.log(id);
     }
 
     SetOverlays((prev) => {
@@ -134,7 +205,9 @@ export default function AllFolder() {
     if (e.currentTarget) {
       id = e.currentTarget.getAttribute("data-index");
     }
-
+    updateSelected((prev) => {
+      return { folder: [], file: [] };
+    });
     SetOverlays((prev) => {
       return {
         ...prev,
@@ -154,7 +227,12 @@ export default function AllFolder() {
         className="Folder"
         extra={props.extra}
         id={props.id}
-        onContextMenu={showFolderOptions}
+        onContextMenu={(e) => {
+          showFolderOptions(e, props.id);
+        }}
+        selected-div="false"
+        style={props.style}
+        // ref = {childRef}
       >
         <div className="star">
           <StarBorderIcon />
@@ -193,21 +271,32 @@ export default function AllFolder() {
       </>
     );
   }
+
   return (
     <>
       <div className="AllFolder" onClick={closeContextMenu} ref={AllFolderRefs}>
         <ContextMenu />
-        <section onContextMenu={newFolderOptions}>
-          <div className="folders">
+        <section onContextMenu={newFolderOptions} ref={section}>
+          <div className="folders" ref={foldersRef}>
             {/* <FolderMap /> */}
-            {folders != null ? (
-              Object.values(folders).slice(0, 0).concat(Object.values(folders).slice(0+1, Object.values(folders).length)).map((value, index,arr) => {
+            {FolderArray != null ? (
+              FolderArray.map((value, index, arr) => {
                 // console.log(arr);
+                let s = {};
+                // console.log(selected);
+                if (selected !== []) {
+                  if (selected.folder.includes(value.folderid.toString())) {
+                    //  console.log("founded");
+                    s = { backgroundColor: "#bca3d5" };
+                  }
+                }
+                let style = s;
                 return (
                   <FolderMap
-                    name={value[0].folderName}
-                    key={value[0].folderid}
-                    id={value[0].folderid}
+                    style={style}
+                    name={value.folderName}
+                    key={value.folderid}
+                    id={value.folderid}
                     // extra={{ type: value[0].type }}
                   />
                 );
@@ -218,7 +307,7 @@ export default function AllFolder() {
           </div>
           <div className="files">
             {files != null ? (
-              files.map((value, index ,arr) => {
+              files.map((value, index, arr) => {
                 // console.log("requiredFileAndFolder map");
                 // console.log(arr);
                 return (
