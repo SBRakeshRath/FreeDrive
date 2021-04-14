@@ -12,7 +12,7 @@ $cause  = "some error happened";
 if ($_POST) {
     // echo ("hallo");
     // print_r($_POST);
-    if ($_POST["makeNewFolder"]) {
+    if (isset($_POST["makeNewFolder"]) && $_POST["makeNewFolder"] ) {
         if (
             ($_POST["folderName"] !== "" && is_string($_POST["folderName"])) &&
             ($_POST["folderPath"] !== "" && is_string($_POST["folderPath"])) &&
@@ -115,9 +115,10 @@ if ($_POST) {
                             $folderName = sha1($folderName);
                             // echo ("\n");
                             // echo ($folderPath);
-
+                            // echo("\n");
                             // echo ("\nnew Path :- ");
                             $rootFolderPath = "../../1213456ALLUSERS/" . $folderName;
+                            // echo($rootFolderPath);
                             // echo ("\n" . $rootFolderPath . "/" . $folderPath);
                             if(mkdir($rootFolderPath . "/" . $folderPath)){
                                 $success = true;

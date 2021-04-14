@@ -1,7 +1,7 @@
 import "./App.css";
 import Intro from "./App/intro/index.jsx";
 import Storage from "./App/storage/index.js";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Admin from "./App/storage/admin/Admin";
 import Signup from "./App/storage/signup.jsx";
 import { FileAndFolderContextProvider } from "./App/storage/admin/FileDisplayComponents/fileAndFolderDetailscontext";
@@ -28,7 +28,7 @@ function App() {
         <Route exact path="/Storage">
           <Storage />
         </Route>
-        <Route exact path="/Storage/Admin">
+        <Route  path="/Storage/Admin">
           <AllUserDetailsContextsProvider>
           <SelectedFolderFileProvider>
             <FileAndFolderContextProvider>

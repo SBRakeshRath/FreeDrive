@@ -7,10 +7,11 @@ export default function Extra() {
   const {userData , setUserData} = useContext(userDatacontext)
   // console.log("context : " +userData.userData.firstName);
  
-  setTimeout(() =>{
-    setUserData({firstName: "C"});
-  },3000);
+//  const timeout =  setTimeout(() =>{
+//     setUserData({firstName: "C"});
+//   },3000);
   // console.log(userData);
+  // return () => clearTimeout(timeout);
   return (
     <>
       
