@@ -1,5 +1,5 @@
 import { useRef, useState, useLayoutEffect ,useContext  } from "react";
-import { OverlayContext } from "../ContextMenuContainer/overlaysContext";
+import { SetOverlayContext } from "../ContextMenuContainer/overlaysContext";
 import positionContextMenu from "./positionContextMenu";
 // import {FileAndFolderContext} from "./../FileDisplayComponents/fileAndFolderDetailscontext";
 
@@ -15,7 +15,7 @@ export default function NewFolderMaker(props) {
   }, [props]);
 
 //newFolder Maker
-const { SetOverlays } = useContext(OverlayContext);
+const { SetOverlays } = useContext(SetOverlayContext);
 // const{RequiredOnesFileAndFolder} = useContext(FileAndFolderContext);
 // const [requiredFileAndFolder] = RequiredOnesFileAndFolder;
 const makeNewFolder = (e)=>{

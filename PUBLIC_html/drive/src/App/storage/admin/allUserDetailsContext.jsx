@@ -21,8 +21,9 @@ import React, {
     }
     //apiS
     const NewFolderMakerApi = "http://localhost/GoogleDrive/PUBLIC_html/phpBakend/newFolderMaker.php"
+    const deleteFolderFileApi =  "http://localhost/GoogleDrive/PUBLIC_html/phpBakend/moveBinFolderFile.php"
 
-    return <allUserDetailsContexts.Provider value = {{userTOKEN,NewFolderMakerApi}}>
+    return <allUserDetailsContexts.Provider value = {{userTOKEN,NewFolderMakerApi,deleteFolderFileApi}}>
         {children}
     </allUserDetailsContexts.Provider>
   } 

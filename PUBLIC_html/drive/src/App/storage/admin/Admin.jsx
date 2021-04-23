@@ -1,4 +1,4 @@
-import React, { useEffect ,useState} from "react";
+import React from "react";
 import TokenChecker from "../TokenChecker";
 import Preloader from "../preloader";
 import { Redirect } from "react-router-dom";
@@ -35,6 +35,7 @@ const Admin = (props) => {
     <>
       <OverlayContextProvider>
         {/* <FileAndFolderContextProvider> */}
+        
         <div className="AdminPage">
           {/* </OverlayContextProvider> */}
 

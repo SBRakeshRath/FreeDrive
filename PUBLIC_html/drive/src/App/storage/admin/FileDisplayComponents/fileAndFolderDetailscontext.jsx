@@ -3,14 +3,17 @@ import React, {
   createContext,
   useLayoutEffect,
   useEffect,
+  useContext,
 } from "react";
 import axios from "axios";
+import { SmallMessageContext } from "./SmallMessageContext";
 import { Redirect, useParams } from "react-router-dom";
 export const FileAndFolderContext = createContext();
 export const FileAndFolderContextProvider = ({ children }) => {
   const apiURL =
     "http://localhost/GoogleDrive/PUBLIC_html/phpBakend/fileAndFolderList.php";
-  const [count, setCount] = useState(1);
+  const { message, setMessage } = useContext(SmallMessageContext);
+
   const [fileAndFolderData, changeFileAndFolderData] = useState(() => {
     return {
       loading: true,
@@ -42,27 +45,18 @@ export const FileAndFolderContextProvider = ({ children }) => {
   const [isRedirect, updateRedirect] = useState(false);
 
   useLayoutEffect(() => {
-    console.log(
-      "teeeeeeeeeeeeeeeeeessssssssssssssssssssstttttttttttttttttttteeeeeeeeeerrrrrrrrrrrr"
-    );
-    console.log(count);
     if (fileAndFolderData.count === 1) return;
-    console.log(fileAndFolderData.current.folder.foroot);
+
     let folder = fileAndFolderData;
     let found = true;
     for (let i = 0; i < path.current.length; i++) {
       if (typeof folder === "object") {
-        console.log("folder path folder");
-        console.log(folder[path.current[i]]);
         folder = folder[path.current[i]];
-        // if(tupefolder[path[i]])
       } else {
         found = false;
         updateRedirect(true);
-        console.log("hehehehehehhehehehehehehehehehehehehehehehehehehehehehe");
       }
     }
-    console.log("i am found :-------" + found);
     if (typeof folder === "undefined") {
       updateRedirect(true);
       return;
@@ -76,16 +70,10 @@ export const FileAndFolderContextProvider = ({ children }) => {
         a.every((val, index) => val === b[index])
       );
     }
-    console.log("pathhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-    console.log(path);
-    console.log(requiredFileAndFolder);
-    console.log(Object.keys(requiredFileAndFolder.current.folder).length);
-    console.log(Object.keys(requiredFileAndFolder.previous.folder).length);
     if (
       arrayEquals(path.current, path.prev)
       //  || Object.keys(requiredFileAndFolder.current.folder).length === 0
     ) {
-      console.log("hii ji");
       updateRequiredFileAndFolder((prev) => {
         return {
           // ...prev,
@@ -94,7 +82,6 @@ export const FileAndFolderContextProvider = ({ children }) => {
         };
       });
     } else {
-      console.log("by ji");
       updateRequiredFileAndFolder((prev) => {
         return {
           ...prev,
@@ -103,14 +90,10 @@ export const FileAndFolderContextProvider = ({ children }) => {
         };
       });
     }
-
-    console.log("updated");
   }, [fileAndFolderData, path]);
 
   const name = "fileAndFolderList";
   useEffect(() => {
-    console.log("hallo");
-    // let isSubscribed = true;
     if (fileAndFolderData.loading === true) {
       const ApiCall = async () => {
         let formData = new FormData();
@@ -134,32 +117,28 @@ export const FileAndFolderContextProvider = ({ children }) => {
                 file: Response.file,
                 folder: Response.folder,
               },
-              count: 2,
+              count: fileAndFolderData.count + 1,
               prev: {
                 // ...prev.current
-                file:{},
-                folder:{}
+                file: {},
+                folder: {},
               },
               size: Response.size,
               // fetched: true,
             };
           });
-          // setCount(count + 1);
-          // updatePath(["folder","foroot"])
-          // }
+          if (message.display === "flex" && message.type === "newFolderMaker") {
+            setMessage({ display: "flex" ,message:"New Folder HighLighted",type:null});
+
+          }
         } catch (error) {
           console.log(JSON.stringify(JSON.parse(error)));
         }
       };
       ApiCall();
-      // return () => (isSubscribed = false);
     }
   }, [fileAndFolderData.loading]);
-  // useEffect(() => {
-  // }, [isRedirect]);
-  console.log("redirecting=======");
-  console.log(isRedirect);
-  // updateRedirect(false);
+
   useEffect(() => {
     if (isRedirect) {
       updateRedirect(false);
@@ -167,12 +146,6 @@ export const FileAndFolderContextProvider = ({ children }) => {
     }
   }, [isRedirect]);
   if (isRedirect) {
-    console.log("redirecting");
-    // updateRedirect(false);
-    console.log(isRedirect);
-    console.log("redirecting");
-    // updatePath(["folder", "foroot"])
-    // return <Redirect exact to="/Storage/Admin" />;
     return <Redirect to="/Storage/Admin/" />;
   }
 

@@ -2,7 +2,11 @@ import { Button } from "@material-ui/core";
 import { useRef, useContext } from "react";
 import { FileAndFolderContext } from "./../FileDisplayComponents/fileAndFolderDetailscontext";
 import { allUserDetailsContexts } from "./../allUserDetailsContext";
-import { OverlayContext } from "./overlaysContext";
+import { SetOverlayContext } from "./overlaysContext";
+// import {SmallMessageContext} from "./../FileDisplayComponents/SmallMessageContext"
+import {
+  SmallMessageContext
+} from "./../FileDisplayComponents/SmallMessageContext.js";
 
 import axios from "axios";
 export default function NewFolderMaker(props) {
@@ -13,9 +17,10 @@ export default function NewFolderMaker(props) {
   const [requiredFileAndFolder] = RequiredOnesFileAndFolder;
   const [, changeFileAndFolderData] = fileAndFolder;
   const { userTOKEN, NewFolderMakerApi } = useContext(allUserDetailsContexts);
-  const { SetOverlays } = useContext(OverlayContext);
+  const { SetOverlays } = useContext(SetOverlayContext);
   
- 
+  const {setMessage} = useContext(SmallMessageContext);
+  
   //   console.log(userTOKEN);
   // console.log(requiredFileAndFolder.folder[0].previewPath);
   // console.log(props);
@@ -92,11 +97,13 @@ export default function NewFolderMaker(props) {
           SetOverlays((prev) => {
             return { ...prev, type: "hide" };
           });
+          setMessage({message:"Successfully Created",display:"flex"});
         }
       } catch (error) {
         console.log(JSON.stringify(error));
       }
     };
+    setMessage({message:"Creating...",display:"flex",type:"newFolderMaker"});
     callApi();
   };
   return (

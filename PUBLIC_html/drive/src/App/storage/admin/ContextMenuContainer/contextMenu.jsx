@@ -7,7 +7,6 @@ import React, { useContext } from "react";
 export default function Overlay(props) {
   const { overlays } = useContext(OverlayContext);
   let menu = null;
-  // console.log(overlays);
 
   if (overlays.type === "file") {
     menu = (
@@ -52,7 +51,7 @@ export default function Overlay(props) {
   if (overlays.type === "hide") {
     menu = null;
   }
-
+  console.log("2");
   return (
     // <div
     //   className="Overlays"
