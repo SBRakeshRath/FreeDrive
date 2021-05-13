@@ -67,7 +67,8 @@ export default function NewFolderMaker(props) {
     if (input != null || input.current != null)
       data.append("makeNewFolder", true);
     data.append("folderName", input.current.value);
-    data.append("folderPath", requiredFileAndFolder.current.folder[0].previewPath);
+    data.append("RootFolderPath", requiredFileAndFolder.current.folder[0].RootFolderPath);
+    data.append("folderid", requiredFileAndFolder.current.folder[0].folderid);
     data.append(
       "userFolderPathName",
       requiredFileAndFolder.current.folder[0].userFolderPathName

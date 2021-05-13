@@ -11,115 +11,128 @@ function isJson($string)
     $data =  json_decode($string);
     return (json_last_error() == JSON_ERROR_NONE);
 }
-$success = true;
+$success = false;
 $insert = false;
 $delete = false;
+$idNotValid = false;
+$serverError = false;
+
+//Local variables
+$inputVerified = false;
+
+
+
+$rootFolderPath = "../../1213456ALLUSERS";
+$deletedFolder = [];
+if (!file_exists($rootFolderPath)) {
+    mkdir($rootFolderPath);
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isJson(file_get_contents('php://input', true))) {
         $data = json_decode(file_get_contents('php://input', true), true);
     }
-    echo ("request received");
 
     if (isset($data["binFolderArray"]) && isset($data["userToken"])) {
 
         if (is_array($data["binFolderArray"]) && is_string($data["userToken"])) {
             $folderArray = $data["binFolderArray"]["folder"];
             if (count($folderArray) > 0) {
-                echo ("fetched");
-                print_r($folderArray);
-                for ($i = 0; $i < count($folderArray); $i++) {
-                    if ($conn) {
-                        $token = $data["userToken"];
-                        $path = $folderArray[$i];
-                        echo ($token);
-                        echo ($path);
-                        //
-                        // mysqli_autocommit($conn, FALSE);
-                        // mysql_query("START TRANSACTION");
-
-                        mysqli_begin_transaction($conn);
-                        $stmt = mysqli_stmt_init($conn);
-
-                        // DELETE
-                        //  FROM foldertable 
-                        //   WHERE serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
-                        //   AND foldertable.folderPath LIKE ?
-                        $sql = " INSERT INTO binfolder
-                        SELECT *
-                         FROM foldertable 
-                          WHERE serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
-                          AND foldertable.folderPath LIKE ?
-                          
-                        
-                          ";
-                        mysqli_stmt_prepare($stmt, $sql);
-                        if (mysqli_stmt_prepare($stmt, $sql)) {
-                            $pathSearch = addcslashes($path, '%_');
-                            $pathSearch = $pathSearch . "%";
-                            mysqli_stmt_bind_param($stmt, "ss", $token, $pathSearch);
-                            if (mysqli_stmt_execute($stmt)) {
-                                echo ("\ndone\n");
-                                $insert = true;
-                            }
-                        } else {
-                            echo (" not prepared");
-                        }
-                        mysqli_stmt_close($stmt);
-                        sleep(10);
-                        $stmt = mysqli_stmt_init($conn);
-
-                        // DELETE
-                        //  FROM foldertable 
-                        //   WHERE serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
-                        //   AND foldertable.folderPath LIKE ?
-                        $sql = "DELETE
-                         FROM foldertable 
-                          WHERE serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
-                          AND foldertable.folderPath LIKE ?
-                          
-                        
-                          ";
-                        mysqli_stmt_prepare($stmt, $sql);
-                        if (mysqli_stmt_prepare($stmt, $sql)) {
-                            $pathSearch = addcslashes($path, '%_');
-                            $pathSearch = $pathSearch . "%";
-                            mysqli_stmt_bind_param($stmt, "ss", $token, $pathSearch);
-                            if (mysqli_stmt_execute($stmt)) {
-                                echo ("\ndone 2\n");
-                                $delete = true;
-                            }
-                        } else {
-                            echo ("not prepared true");
-                        }
-                        mysqli_stmt_close($stmt);
-                        // mysqli_commit($conn);
-                        if ($insert && $delete) {
-                            echo ("\ncompleted");
-                            mysqli_commit($conn);
-                        }else{
-                            mysqli_rollback($conn);
-                        }
-                        $query = "SELECT *
-                    FROM foldertable
-                    WHERE EXISTS (SELECT * FROM foldertable WHERE `folderPath` =  $pathSearch)
-                    
-                   ";
-                   $result = mysqli_query($conn, $query);
-
-                //    if (mysqli_num_rows($result) > 0) {
-                     // output data of each row
-                     echo "datasssssss\n";
-                     while($row = mysqli_fetch_assoc($result)) {
-                      print_r($row);
-                     }
-                //    } else {
-                //      echo "0 results";
-                //    }
-                   
-                //    mysqli_close($conn);
-                    }
-                }
+                $inputVerified = true;
             }
         }
     }
 }
+
+function trash_folder($id)
+{
+    //import global variables
+    global $conn;
+    global $idNotValid;
+    global $data;
+    global $success;
+    global $serverError;
+
+    // check if id is valid or not 
+    $sql =  "SELECT count(folderid) AS count from foldertable where serverToken =  (SELECT serverToken from servertoken where userToken = ?) and folderid = ? limit 1";
+    $stmt =  mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "si", $data["userToken"], $id);
+    if (!mysqli_stmt_execute($stmt)) {
+        $serverError = true;
+        echo "server Error";
+        return;
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row["count"] === 0) {
+        $idNotValid = true;
+        return;
+    }
+
+    // update the folders to trashed
+    mysqli_begin_transaction($conn);
+    $sql = "UPDATE LOW_PRIORITY foldertable SET trashed = 1 WHERE serverToken = (SELECT serverToken from servertoken where userToken = ? limit 1) and 
+    
+    (folderId = ?
+    or 
+    RootFolderPath LIKE 
+                CONCAT (
+                    (SELECT RootFolderPath FROM foldertable WHERE serverToken = (SELECT serverToken from servertoken where userToken = ? ) AND folderid = ? limit 1)
+                    ,'/'
+                    , ?
+                    ,'%'
+
+                )
+    )";
+    $stmt =  mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "sisii", $data["userToken"], $id, $data["userToken"], $id, $id);
+    if (!mysqli_stmt_execute($stmt)) {
+        echo mysqli_stmt_error($stmt);
+        $serverError = true;
+        return;
+    }
+    // echo "\n\n affected rows " . mysqli_affected_rows($conn);
+    if (mysqli_affected_rows($conn) > 0) {
+        sleep(15);
+        // Insert into bin folder
+        $sql = "INSERT INTO binfolder (serverToken , folderId) value ( (SELECT serverToken from servertoken where userToken = ? limit 1) , ?)";
+        $stmt =  mysqli_stmt_init($conn);
+        mysqli_stmt_prepare($stmt, $sql);
+        mysqli_stmt_bind_param($stmt, "si", $data["userToken"], $id);
+        if (!mysqli_stmt_execute($stmt)) {
+            echo mysqli_stmt_error($stmt);
+            $serverError = true;
+            return;
+        }
+        if (mysqli_affected_rows($conn) > 0) {
+            $success = true;
+            mysqli_commit($conn);
+        }
+        else {
+            mysqli_rollback($conn);
+        }
+
+    }
+}
+
+
+
+
+
+
+if ($inputVerified) {
+    if (!$conn) {
+        $serverError = true;
+        return;
+    }
+    for ($i = 0; $i < count($data["binFolderArray"]["folder"]); $i++) {
+        trash_folder($data["binFolderArray"]["folder"][$i]);
+    }
+}
+
+
+$showArray = array("idNotValid" => $idNotValid, "success" => $success, "serverError" => $serverError);
+
+echo json_encode($showArray);

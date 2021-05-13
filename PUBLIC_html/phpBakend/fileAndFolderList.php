@@ -11,7 +11,7 @@ header("Access-Control-Allow-Credentials: true");
 //testing
 $showArray = array();
 
-$sqlFile = "SELECT * FROM `foldertable` WHERE `serverToken` = ?";
+$sqlFile = "SELECT * FROM `foldertable` WHERE `serverToken` = ? AND trashed = 0";
 $FileStmt = mysqli_stmt_init($conn);
 $folderTableFetched = false;
 if (mysqli_stmt_prepare($FileStmt, $sqlFile)) {
@@ -24,8 +24,8 @@ if (mysqli_stmt_prepare($FileStmt, $sqlFile)) {
 
         $FolderTableFetched = true;
         $pathSequenceArray = array();
-        $CFP = $row["folderPath"];
-
+        $CFP = $row["RootFolderPath"];
+        $CFP = $CFP . "/" .$row["folderid"] ;
         $CFP = explode("/", $CFP);
         $row["folderPathSequence"] = $CFP;
         array_push($superFolderArray, $row);
@@ -33,8 +33,9 @@ if (mysqli_stmt_prepare($FileStmt, $sqlFile)) {
 
     // extra
     $rootArray = [
-        "folderName"=>"root", "folderid"=>"root","folderPath"=>"root","previewPath"=>"root","userFolderPathName"=>"root","folderPathSequence"=>["root"]
+        "folderName"=>"root", "folderid"=>"root","RootFolderPath"=>"root","	RootFolderPreviewPath"=>"root","userFolderPathName"=>"root","folderPathSequence"=>["root"]
     ];
+    // print_r($superFolderArray);
     $superFolderArray[] = $rootArray;
     //Shorting
     $skeleton =array();

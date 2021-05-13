@@ -35,7 +35,7 @@ export default function Main(props) {
     if (typeof details === "undefined") {
       details  = "id=11234path=current_folder_foroot"
     }
-      const pattern = /^id=[0-9]+path=[a-zA-Z0-9_]{0,}$/;
+      const pattern = /^id=[a-zA-Z0-9_]+path=[a-zA-Z0-9_]{0,}$/;
       if (details.match(pattern)) {
         
         let paramDetails = details.split("id=");

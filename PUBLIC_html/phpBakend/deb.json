@@ -1,0 +1,909 @@
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Wed, 11 Dec 2019 09:57:10 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1958
+
+{
+ "kind": "drive#file",
+ "id": "1-FnI07L-p3o0HkVSs_3C5_pU4TgKXjyB",
+ "thumbnailVersion": "1",
+ "title": "JEEMAINJAN_AdmitCard.pdf",
+ "mimeType": "application/pdf",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2019-12-07T09:40:59.347Z",
+ "modifiedDate": "2019-12-11T09:57:10.799Z",
+ "modifiedByMeDate": "2019-12-11T09:57:10.799Z",
+ "lastViewedByMeDate": "2021-03-11T11:11:20.499Z",
+ "recency": "2021-03-11T11:11:20.499Z",
+ "recencyReason": "viewedByMe",
+ "version": "8",
+ "parents": [
+  {
+   "id": "1-8O6h-OyXGVEAOrM1LwV7K78dYcjKXAq"
+  }
+ ],
+ "userPermission": {
+  "role": "owner"
+ },
+ "fileExtension": "pdf",
+ "fileSize": "2090042",
+ "quotaBytesUsed": "2090042",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "114465238735819322447",
+   "permissionId": "07848732802208769614",
+   "emailAddressFromAccount": "2002.rath@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "114465238735819322447",
+  "permissionId": "07848732802208769614",
+  "emailAddressFromAccount": "2002.rath@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": false,
+  "canCopy": true,
+  "canDelete": true,
+  "canDownload": true,
+  "canEdit": true,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": true,
+  "canMoveItemWithinDrive": true,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": true,
+  "canShare": true,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": true,
+  "canUntrash": true
+ },
+ "copyable": true,
+ "shared": false,
+ "explicitlyTrashed": false,
+ "primarySyncParentId": "1-8O6h-OyXGVEAOrM1LwV7K78dYcjKXAq",
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "378076965553",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Mon, 19 Apr 2021 05:25:07 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 2044
+
+{
+ "kind": "drive#file",
+ "id": "1kbIEsleHzsZgrM8AEHKNuxk-NUKs925FRFXG9XUQzv0",
+ "thumbnailVersion": "3",
+ "title": "ððð",
+ "mimeType": "application/vnd.google-apps.document",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2021-04-19T05:14:40.869Z",
+ "modifiedDate": "2021-04-19T05:25:07.915Z",
+ "modifiedByMeDate": "2021-04-19T05:25:07.915Z",
+ "lastViewedByMeDate": "2021-04-27T16:32:58.989Z",
+ "sharedWithMeDate": "2021-04-19T05:15:23.892Z",
+ "recency": "2021-04-27T16:32:58.989Z",
+ "recencyReason": "viewedByMe",
+ "version": "27",
+ "sharingUser": {
+  "kind": "drive#user",
+  "id": "116413267323371469865",
+  "permissionId": "02003384526251175979",
+  "emailAddressFromAccount": "alexvarcgenko@gmail.com"
+ },
+ "parents": [],
+ "userPermission": {
+  "role": "reader"
+ },
+ "quotaBytesUsed": "0",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "116413267323371469865",
+   "permissionId": "02003384526251175979",
+   "emailAddressFromAccount": "alexvarcgenko@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "114465238735819322447",
+  "permissionId": "07848732802208769614",
+  "emailAddressFromAccount": "2002.rath@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": true,
+  "canCopy": true,
+  "canDelete": false,
+  "canDownload": true,
+  "canEdit": false,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": false,
+  "canMoveItemWithinDrive": false,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": false,
+  "canShare": false,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": false,
+  "canUntrash": false
+ },
+ "copyable": true,
+ "shared": true,
+ "explicitlyTrashed": false,
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "619683526622",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Fri, 30 Apr 2021 01:34:44 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1877
+
+{
+ "kind": "drive#file",
+ "id": "1zfDQYUVybnFgcrf2YWKF9-_IrJ45BuWqGELLEiZNiSg",
+ "thumbnailVersion": "4",
+ "title": "ð¥",
+ "mimeType": "application/vnd.google-apps.document",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": false
+ },
+ "createdDate": "2021-04-30T01:13:06.594Z",
+ "modifiedDate": "2021-04-30T01:34:44.393Z",
+ "sharedWithMeDate": "2021-04-30T01:13:38.843Z",
+ "version": "22",
+ "sharingUser": {
+  "kind": "drive#user",
+  "id": "106168845083002346307",
+  "permissionId": "02256011304922022575",
+  "emailAddressFromAccount": "phanalinri197828@gmail.com"
+ },
+ "parents": [],
+ "userPermission": {
+  "role": "reader"
+ },
+ "quotaBytesUsed": "0",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "106168845083002346307",
+   "permissionId": "02256011304922022575",
+   "emailAddressFromAccount": "phanalinri197828@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "101413812050864713934",
+  "permissionId": "09876084332729328988",
+  "emailAddressFromAccount": "2002panzer10777@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": true,
+  "canCopy": true,
+  "canDelete": false,
+  "canDownload": true,
+  "canEdit": false,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": false,
+  "canMoveItemWithinDrive": false,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": false,
+  "canShare": false,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": false,
+  "canUntrash": false
+ },
+ "copyable": true,
+ "shared": true,
+ "explicitlyTrashed": false,
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "619683526622",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Wed, 26 Dec 2018 18:23:34 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1924
+
+{
+ "kind": "drive#file",
+ "id": "11coWFhwRAVy7QpwQjFva9ylO1PISS55R",
+ "thumbnailVersion": "1",
+ "title": "VID20181226162340.mp4",
+ "mimeType": "video/mp4",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2018-12-26T18:23:34.497Z",
+ "modifiedDate": "2018-12-26T18:23:34.497Z",
+ "modifiedByMeDate": "2018-12-26T18:23:34.497Z",
+ "lastViewedByMeDate": "2019-01-06T08:59:02.519Z",
+ "recency": "2019-01-06T08:59:02.519Z",
+ "recencyReason": "viewedByMe",
+ "version": "12",
+ "parents": [
+  {
+   "id": "0AHGtLr-SF9BpUk9PVA"
+  }
+ ],
+ "userPermission": {
+  "role": "owner"
+ },
+ "fileExtension": "mp4",
+ "fileSize": "28592881",
+ "quotaBytesUsed": "28592881",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "114465238735819322447",
+   "permissionId": "07848732802208769614",
+   "emailAddressFromAccount": "2002.rath@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "114465238735819322447",
+  "permissionId": "07848732802208769614",
+  "emailAddressFromAccount": "2002.rath@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": false,
+  "canCopy": true,
+  "canDelete": true,
+  "canDownload": true,
+  "canEdit": true,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": true,
+  "canMoveItemWithinDrive": true,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": true,
+  "canShare": true,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": true,
+  "canUntrash": true
+ },
+ "copyable": true,
+ "shared": false,
+ "explicitlyTrashed": false,
+ "primarySyncParentId": "0AHGtLr-SF9BpUk9PVA",
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "378076965553",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Fri, 01 May 2020 15:12:00 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1867
+
+{
+ "kind": "drive#file",
+ "id": "10UouDxfVaBVDI-hM-CL1AHYM_KRgi0b_",
+ "thumbnailVersion": "1",
+ "title": "TRUEMAN BIOLOGY RESTORE BOOK.pdf",
+ "mimeType": "application/pdf",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2020-05-01T04:01:44.516Z",
+ "modifiedDate": "2020-05-01T15:12:00.384Z",
+ "lastViewedByMeDate": "2021-03-21T08:57:32.272Z",
+ "sharedWithMeDate": "2020-07-16T10:59:36.582Z",
+ "recency": "2021-03-21T08:57:32.272Z",
+ "recencyReason": "viewedByMe",
+ "version": "23060",
+ "parents": [],
+ "userPermission": {
+  "role": "reader"
+ },
+ "fileExtension": "pdf",
+ "fileSize": "3622332",
+ "quotaBytesUsed": "3622332",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "106139298519899788091",
+   "permissionId": "16283184686942765723",
+   "emailAddressFromAccount": "healthpossla@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "106139298519899788091",
+  "permissionId": "16283184686942765723",
+  "emailAddressFromAccount": "healthpossla@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": true,
+  "canCopy": true,
+  "canDelete": false,
+  "canDownload": true,
+  "canEdit": false,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": false,
+  "canMoveItemWithinDrive": false,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": false,
+  "canShare": false,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": false,
+  "canUntrash": false
+ },
+ "copyable": true,
+ "shared": true,
+ "explicitlyTrashed": false,
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "378076965553",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Tue, 10 Sep 2019 13:34:23 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1945
+
+{
+ "kind": "drive#file",
+ "id": "1-3YyjtBDyXv9X1PpGP6hUio7MggKKVwQ",
+ "thumbnailVersion": "1",
+ "title": "trigonometry",
+ "mimeType": "application/pdf",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2019-09-08T06:00:47.364Z",
+ "modifiedDate": "2019-09-10T13:34:23.176Z",
+ "modifiedByMeDate": "2019-09-10T13:34:23.176Z",
+ "lastViewedByMeDate": "2019-09-10T13:34:23.176Z",
+ "recency": "2019-09-10T13:34:23.176Z",
+ "recencyReason": "modifiedByMe",
+ "version": "6",
+ "parents": [
+  {
+   "id": "1-2DX8gWl6LuKPdMCHCSW8Nhu7QnvLgJN"
+  }
+ ],
+ "userPermission": {
+  "role": "owner"
+ },
+ "fileExtension": "",
+ "fileSize": "1631547",
+ "quotaBytesUsed": "1631547",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "114465238735819322447",
+   "permissionId": "07848732802208769614",
+   "emailAddressFromAccount": "2002.rath@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "114465238735819322447",
+  "permissionId": "07848732802208769614",
+  "emailAddressFromAccount": "2002.rath@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": false,
+  "canCopy": true,
+  "canDelete": true,
+  "canDownload": true,
+  "canEdit": true,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": true,
+  "canMoveItemWithinDrive": true,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": true,
+  "canShare": true,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": true,
+  "canUntrash": true
+ },
+ "copyable": true,
+ "shared": false,
+ "explicitlyTrashed": false,
+ "primarySyncParentId": "1-2DX8gWl6LuKPdMCHCSW8Nhu7QnvLgJN",
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "378076965553",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Sat, 21 Mar 2020 22:47:45 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1941
+
+{
+ "kind": "drive#file",
+ "id": "1217-rhtJq5mXu1A0eWN-1tpdTOXeh9qX",
+ "thumbnailVersion": "1",
+ "title": "ouat.pdf",
+ "mimeType": "application/pdf",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2020-03-30T15:37:55.255Z",
+ "modifiedDate": "2020-03-21T22:47:45.136Z",
+ "modifiedByMeDate": "2020-03-21T22:47:45.136Z",
+ "lastViewedByMeDate": "2020-03-30T15:37:55.255Z",
+ "recency": "2020-03-30T15:37:55.648Z",
+ "recencyReason": "createdByMe",
+ "version": "3",
+ "parents": [
+  {
+   "id": "1-8O6h-OyXGVEAOrM1LwV7K78dYcjKXAq"
+  }
+ ],
+ "userPermission": {
+  "role": "owner"
+ },
+ "fileExtension": "pdf",
+ "fileSize": "127403",
+ "quotaBytesUsed": "127403",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "114465238735819322447",
+   "permissionId": "07848732802208769614",
+   "emailAddressFromAccount": "2002.rath@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "114465238735819322447",
+  "permissionId": "07848732802208769614",
+  "emailAddressFromAccount": "2002.rath@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": false,
+  "canCopy": true,
+  "canDelete": true,
+  "canDownload": true,
+  "canEdit": true,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": true,
+  "canMoveItemWithinDrive": true,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": true,
+  "canShare": true,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": true,
+  "canUntrash": true
+ },
+ "copyable": true,
+ "shared": false,
+ "explicitlyTrashed": false,
+ "primarySyncParentId": "1-8O6h-OyXGVEAOrM1LwV7K78dYcjKXAq",
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "378076965553",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Mon, 23 Sep 2019 14:45:45 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1940
+
+{
+ "kind": "drive#file",
+ "id": "1-C3bFqezMgOZcODfKeYhgtVT4MXW0UZn",
+ "thumbnailVersion": "1",
+ "title": "JEEMAIN",
+ "mimeType": "application/pdf",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2019-09-23T14:44:12.875Z",
+ "modifiedDate": "2019-09-23T14:45:45.253Z",
+ "modifiedByMeDate": "2019-09-23T14:45:45.253Z",
+ "lastViewedByMeDate": "2019-09-23T14:45:45.253Z",
+ "recency": "2019-09-23T14:45:45.253Z",
+ "recencyReason": "modifiedByMe",
+ "version": "6",
+ "parents": [
+  {
+   "id": "1-8O6h-OyXGVEAOrM1LwV7K78dYcjKXAq"
+  }
+ ],
+ "userPermission": {
+  "role": "owner"
+ },
+ "fileExtension": "",
+ "fileSize": "2056572",
+ "quotaBytesUsed": "2056572",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "114465238735819322447",
+   "permissionId": "07848732802208769614",
+   "emailAddressFromAccount": "2002.rath@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "114465238735819322447",
+  "permissionId": "07848732802208769614",
+  "emailAddressFromAccount": "2002.rath@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": false,
+  "canCopy": true,
+  "canDelete": true,
+  "canDownload": true,
+  "canEdit": true,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": true,
+  "canMoveItemWithinDrive": true,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": true,
+  "canShare": true,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": true,
+  "canUntrash": true
+ },
+ "copyable": true,
+ "shared": false,
+ "explicitlyTrashed": false,
+ "primarySyncParentId": "1-8O6h-OyXGVEAOrM1LwV7K78dYcjKXAq",
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "378076965553",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Mon, 19 Apr 2021 05:25:07 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 2044
+
+{
+ "kind": "drive#file",
+ "id": "1kbIEsleHzsZgrM8AEHKNuxk-NUKs925FRFXG9XUQzv0",
+ "thumbnailVersion": "3",
+ "title": "ððð",
+ "mimeType": "application/vnd.google-apps.document",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": true
+ },
+ "createdDate": "2021-04-19T05:14:40.869Z",
+ "modifiedDate": "2021-04-19T05:25:07.915Z",
+ "modifiedByMeDate": "2021-04-19T05:25:07.915Z",
+ "lastViewedByMeDate": "2021-04-27T16:32:58.989Z",
+ "sharedWithMeDate": "2021-04-19T05:15:23.892Z",
+ "recency": "2021-04-27T16:32:58.989Z",
+ "recencyReason": "viewedByMe",
+ "version": "27",
+ "sharingUser": {
+  "kind": "drive#user",
+  "id": "116413267323371469865",
+  "permissionId": "02003384526251175979",
+  "emailAddressFromAccount": "alexvarcgenko@gmail.com"
+ },
+ "parents": [],
+ "userPermission": {
+  "role": "reader"
+ },
+ "quotaBytesUsed": "0",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "116413267323371469865",
+   "permissionId": "02003384526251175979",
+   "emailAddressFromAccount": "alexvarcgenko@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "114465238735819322447",
+  "permissionId": "07848732802208769614",
+  "emailAddressFromAccount": "2002.rath@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": true,
+  "canCopy": true,
+  "canDelete": false,
+  "canDownload": true,
+  "canEdit": false,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": false,
+  "canMoveItemWithinDrive": false,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": false,
+  "canShare": false,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": false,
+  "canUntrash": false
+ },
+ "copyable": true,
+ "shared": true,
+ "explicitlyTrashed": false,
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "619683526622",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458
+Content-Type: application/http
+
+HTTP/1.1 200 OK
+Last-Modified: Fri, 30 Apr 2021 01:34:44 GMT
+Content-Type: application/json; charset=UTF-8
+Date: Sun, 09 May 2021 02:39:19 GMT
+Expires: Sun, 09 May 2021 02:39:19 GMT
+Cache-Control: private, max-age=0
+Content-Length: 1877
+
+{
+ "kind": "drive#file",
+ "id": "1zfDQYUVybnFgcrf2YWKF9-_IrJ45BuWqGELLEiZNiSg",
+ "thumbnailVersion": "4",
+ "title": "ð¥",
+ "mimeType": "application/vnd.google-apps.document",
+ "labels": {
+  "starred": false,
+  "trashed": false,
+  "restricted": false,
+  "viewed": false
+ },
+ "createdDate": "2021-04-30T01:13:06.594Z",
+ "modifiedDate": "2021-04-30T01:34:44.393Z",
+ "sharedWithMeDate": "2021-04-30T01:13:38.843Z",
+ "version": "22",
+ "sharingUser": {
+  "kind": "drive#user",
+  "id": "106168845083002346307",
+  "permissionId": "02256011304922022575",
+  "emailAddressFromAccount": "phanalinri197828@gmail.com"
+ },
+ "parents": [],
+ "userPermission": {
+  "role": "reader"
+ },
+ "quotaBytesUsed": "0",
+ "owners": [
+  {
+   "kind": "drive#user",
+   "id": "106168845083002346307",
+   "permissionId": "02256011304922022575",
+   "emailAddressFromAccount": "phanalinri197828@gmail.com"
+  }
+ ],
+ "lastModifyingUser": {
+  "kind": "drive#user",
+  "id": "101413812050864713934",
+  "permissionId": "09876084332729328988",
+  "emailAddressFromAccount": "2002panzer10777@gmail.com"
+ },
+ "capabilities": {
+  "canAddChildren": false,
+  "canAddMyDriveParent": false,
+  "canBlockOwner": true,
+  "canCopy": true,
+  "canDelete": false,
+  "canDownload": true,
+  "canEdit": false,
+  "canMoveChildrenWithinDrive": false,
+  "canMoveItemIntoTeamDrive": false,
+  "canMoveItemWithinDrive": false,
+  "canRead": true,
+  "canRemoveChildren": false,
+  "canRemoveMyDriveParent": true,
+  "canRename": false,
+  "canShare": false,
+  "canShareChildFiles": false,
+  "canShareChildFolders": false,
+  "canTrash": false,
+  "canUntrash": false
+ },
+ "copyable": true,
+ "shared": true,
+ "explicitlyTrashed": false,
+ "subscribed": true,
+ "passivelySubscribed": false,
+ "flaggedForAbuse": false,
+ "sourceAppId": "619683526622",
+ "spaces": [
+  "drive",
+  "DRIVE"
+ ],
+ "hasThumbnail": true,
+ "containsUnsubscribedChildren": false
+}
+
+--batch_tNssApRJa2M_AAMwIG36458--
++

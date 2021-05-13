@@ -5,183 +5,343 @@ header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers:Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true");
-$folderId = null;
-$createFolder = false;
-$success = false;
-$a = "a";
-$rootF = false;
-$cause  = "some error happened";
-if ($_POST) {
-    // echo ("hallo");
-    // print_r($_POST);
-    if (isset($_POST["makeNewFolder"]) && $_POST["makeNewFolder"]) {
-        // for ($lm=0; $lm < 1; $lm++) { 
-        # code...
+// $start_time = microtime(true);
+
+// IMPORTANT VARIABLES ------->>>>>
+
+
+$superFolderPath = "../../1213456ALLUSERS";
+$maxFolderId = 99999;
+$minFolderId = 100;
+$maxFolderCount = 50;
+
+// SENDING VARIABLE 
+
+$serverError = true;
+$limitExceed = false ;
+$success = false ;
+$trashed = false ;
+$rootError = false ; 
+$tokenInValid = false;
+
+// LOCAL VARIABLES 
+
+$inputVerified = false;
+$isRootRoot = true;
+
+$response_root_random_gen = [];
+
+
+
+
+// check super folder exist or not 
+
+if (!file_exists($superFolderPath)) {
+    mkdir($superFolderPath);
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (
+        isset($_POST["makeNewFolder"]) &&
+        isset($_POST["RootFolderPath"]) &&
+        isset($_POST["folderid"]) &&
+        isset($_POST["userFolderPathName"]) &&
+        isset($_POST["userToken"])
+    ) {
+        // check Input formats 
+
 
         if (
-            ($_POST["folderName"] !== "" && is_string($_POST["folderName"])) &&
-            ($_POST["folderPath"] !== "" && is_string($_POST["folderPath"])) &&
-            ($_POST["userToken"] !== "" && is_string($_POST["userToken"])) &&
-            substr($_POST["folderPath"], 0, 4) === "root" && is_string($_POST["userFolderPathName"])
-            && substr($_POST["userFolderPathName"], 0, 4) === "root"
+            is_string($_POST["RootFolderPath"]) &&
+            is_string($_POST["folderid"]) &&
+            is_string($_POST["userFolderPathName"]) &&
+            is_string($_POST["userToken"])
         ) {
+            $inputVerified = true;
             if (
-                $_POST["folderPath"]  && $_POST["folderPath"] !== "root"
+                $_POST["folderid"] !== "root"
             ) {
-                mysqli_begin_transaction($conn);
-                $stmt = mysqli_stmt_init($conn);
-                // $sql = "SELECT * FROM foldertable JOIN servertoken ON servertoken.userToken = ? AND foldertable.folderPath = ? LIMIT 1";
-                $sql = "SELECT * FROM foldertable 
-                WHERE serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
-                AND foldertable.folderPath = ?
-                ";
-                mysqli_stmt_prepare($stmt, $sql);
-                if (mysqli_stmt_prepare($stmt, $sql)) {
-                    // echo ("\n prepared\n");
-                }
-                mysqli_stmt_bind_param($stmt, "ss", $_POST["userToken"], $_POST["folderPath"]);
-                mysqli_stmt_execute($stmt);
-                $result = mysqli_stmt_get_result($stmt);
-                if ($row = mysqli_fetch_array($result)) {
-                    $createFolder = true;
-                    // print
-                    print_r($row);
-                    echo ("\n create \n");
-                    $rootF = false;
-                }
-            } else if ($_POST["folderPath"] === "root") {
-                $createFolder = true;
-                $a = "b";
-                $rootF = true;
-            } else {
-                $createFolder = false;
-                $rootF = false;
-            }
-            // echo ("all Credentials are okay");
-            if ($createFolder) {
-
-                for ($i = 0; ;) { //`servertoken`.`serverToken` AS `sToken`
-                    $id = mt_rand(100, 9999999999);
-                    // echo($id);
-                    // $id = 1;
-                    $stmt = mysqli_stmt_init($conn);
-                    //     $sql = "SELECT foldertable.*
-
-                    // FROM foldertable
-
-                    // JOIN servertoken
-
-                    // ON servertoken.userToken = ? AND foldertable.folderPath = ? LIMIT 1";
-                    $sql = "SELECT * FROM foldertable 
-                 WHERE serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
-                 AND foldertable.folderPath = ?
-                 ";
-
-                    if (!mysqli_stmt_prepare($stmt, $sql)) {
-                        // echo ("\nprepare failed");
-                    } else {
-                        // $token ="36daaae649c8b5bcfffe14e7cf5702cb";
-                        $path = $_POST["folderPath"] . "/" . strval($id);
-                        $path = substr(strstr($path, '/'), 1);
-                        $path = "root/" . $path;
-                        // $path =  "1/1";
-                        mysqli_stmt_bind_param($stmt, "ss", $_POST["userToken"], $path);
-                        mysqli_stmt_execute($stmt);
-                        $result = mysqli_stmt_get_result($stmt);
-                        if (mysqli_fetch_assoc($result)) {
-                            // echo ("found");
-                        } else {
-                            $folderId = $id;
-                            break;
-                        }
-                    }
-                    // break;
-                }
-            }
-        } else {
-            // echo ("some error");
-        }
-        if ($folderId != null && !$rootF) {
-
-            # code...
-
-            $stmt = mysqli_stmt_init($conn);
-            $sql = "SELECT * FROM `servertoken` WHERE `userToken` = ?  LIMIT 1";
-            if (mysqli_stmt_prepare($stmt, $sql)) {
-                mysqli_stmt_bind_param($stmt, "s", $_POST["userToken"]);
-                mysqli_stmt_execute($stmt);
-                $result = mysqli_stmt_get_result($stmt);
-                if ($row = mysqli_fetch_assoc($result)) {
-                    // echo "\ntoken";
-                    // print_r($row);
-                    $FileServerToken = $row["serverToken"];
-                    //Insert Data
-                    $stmt = mysqli_stmt_init($conn);
-                    $sql = "INSERT INTO foldertable(`serverToken` , `folderName` , `folderid` , `folderPath` , `createdTime` , `LastEdited` , `previewPath` , `userFolderPathName`)
-                           VALUES( (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1) ,? ,? ,? ,CURRENT_TIMESTAMP() ,CURRENT_TIMESTAMP() ,? ,? ) 
-                     ";
-                    $sql = "  INSERT INTO foldertable(`serverToken` , `folderName` , `folderid` , `folderPath` , `createdTime` , `LastEdited` , `previewPath` , `userFolderPathName`)
-                     SELECT (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1) ,? ,? ,? ,CURRENT_TIMESTAMP() ,CURRENT_TIMESTAMP() ,? ,?
-                     FROM foldertable
-                     WHERE (`folderPath` = ?
-                     AND serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1))
-                    ";
-                    $sql = "  INSERT INTO foldertable(`serverToken` , `folderName` , `folderid` , `folderPath` , `createdTime` , `LastEdited` , `previewPath` , `userFolderPathName`)
-                     SELECT (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1) ,? ,? ,? ,CURRENT_TIMESTAMP() ,CURRENT_TIMESTAMP() ,? ,?
-                     FROM foldertable
-                     WHERE  NOT  EXISTS (SELECT * FROM foldertable WHERE folderPath = ? AND serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1))
-                     AND NOT  EXISTS (SELECT * FROM binfolder WHERE folderPath = ? AND serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1))
-                     AND  EXISTS (SELECT * FROM foldertable WHERE folderPath = ? AND serverToken = (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1))
-                    ";
-                    mysqli_stmt_prepare($stmt, $sql);
-                    if (mysqli_stmt_prepare($stmt, $sql)) {
-                        // echo ("success");
-                        $folderPath = $_POST["folderPath"] . "/" . strval($folderId);
-                        $folderPath = substr(strstr($folderPath, '/'), 1);
-                        $folderPath = "root/" . $folderPath;
-                        $userFolderPathName = $_POST["userFolderPathName"] . "/" . $_POST["folderName"];
-                        $userFolderPathName = substr(strstr($userFolderPathName, '/'), 1);
-                        $userFolderPathName = "root/" . $userFolderPathName;
-                        // mysqli_stmt_bind_param($stmt, "ssisss", $_POST["userToken"], $_POST["folderName"], $folderId, $folderPath, $folderPath, $userFolderPathName);
-                        $token12345 = $_POST["userToken"];
-                        // $token12345 = "12345";
-                        $path = "root/4056194994";
-                        $TTS = "36daaae649c8b5bcfffe14e7cf5702cb";
-                        mysqli_stmt_bind_param($stmt, "ssisssssssss", $_POST["userToken"], $_POST["folderName"], $folderId, $folderPath, $folderPath, $userFolderPathName,  $folderPath, $_POST["userToken"], $folderPath, $_POST["userToken"], $_POST["folderPath"], $_POST["userToken"]);
-                        if (mysqli_stmt_execute($stmt) && mysqli_stmt_affected_rows($stmt) > 0) {
-                            echo ("inserted");
-                            $salt = "sbrakeshrath1234";
-                            $folderName = $FileServerToken . $salt;
-                            $folderName = sha1($folderName);
-                            // echo ("\n");
-                            echo ($folderPath);
-                            echo ("\n" . $_POST["folderPath"] . "\n");
-                            // echo("\n");
-                            // echo ("\nnew Path :- ");
-                            $rootFolderPath = "../../1213456ALLUSERS/" . $folderName;
-                            // echo($rootFolderPath);
-                            // echo ("\n" . $rootFolderPath . "/" . $folderPath);
-                            if (mkdir($rootFolderPath . "/" . $folderPath)) {
-                                $success = true;
-                                $cause = "Success";
-                                mysqli_commit($conn);
-                            };
-                        }
-                        // print_r($stmt);
-                    } else {
-                        // echo "failed ";
-                    }
-                    mysqli_close($conn);
-                    //end of insert data
-                } else {
-                    // echo "user Not Found";
-                }
-                // }
-
+                $isRootRoot = false;
             }
         }
-        // else if()
     }
 }
-$showArray = ["success" => $success, "cause" => $cause];
+
+// $folderId = 
+function random_num_generator($conn, $maxFolderId, $minFolderId, $maxFolderCount)
+{
+    global $response_root_random_gen;
+    global $limitExceed ;
+    global $tokenInValid;
+    //check if userToken is valid or not 
+    $sql = "SELECT count(*) AS count FROM servertoken where userToken = ?";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $_POST["userToken"]);
+    if (!mysqli_stmt_execute($stmt)) {
+        echo ("first one failed");
+        return;
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    if($row["count"] !=  1){
+        $tokenInValid = true ;
+        return ;
+    }
+
+    // Get the server token 
+    $sql = "SELECT serverToken FROM servertoken where userToken = ?";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $_POST["userToken"]);
+    if (!mysqli_stmt_execute($stmt)) {
+        echo ("first one failed");
+        return;
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    $saltFolderId = md5($row["serverToken"]);
+
+    // check for limit ;
+
+    $finalId = null;
+    $response = [];
+
+    $sql = "SELECT count(*) AS count FROM foldertable WHERE serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?)";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $_POST["userToken"]);
+    if (!mysqli_stmt_execute($stmt)) {
+        echo ("first one failed");
+        return;
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    if ($row["count"] > ($maxFolderCount - 1)) {
+        $response["limit"] = true;
+        $response["id"] = null;
+        $response_root_random_gen = $response;
+        $limitExceed = true ;
+        return $response;
+    }
+    mysqli_stmt_close($stmt);
+
+    // If not limit has exceeded
+    $folderId = mt_rand($minFolderId, $maxFolderId);
+    $folderId = $saltFolderId . $folderId ;
+    $sql = "SELECT count(folderid) as count FROM foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?) AND folderid = '$folderId'  limit 1 ";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $_POST["userToken"]);
+    if (!mysqli_stmt_execute($stmt)) {
+        echo (mysqli_stmt_error($stmt)) ;
+        echo ("first one failed");
+        return;
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    if ($row["count"] !== 0) {
+        random_num_generator($conn, $maxFolderId, $minFolderId, $maxFolderCount);
+    } else {
+        $finalId = $folderId;
+        $response["limit"] = false;
+        $response["id"] = $folderId;
+        $response_root_random_gen = $response;
+    }
+}
+
+
+function InsertRootFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount, $allRejectedId = [], $count = 0)
+{
+    //Importing Global Variables 
+
+    // Select an Id For Each Folder -----
+    $folderId = null;
+    //Generating An Random Id Which is not present in folderTable 
+
+    global $response_root_random_gen;
+    random_num_generator($conn, $maxFolderId, $minFolderId, $maxFolderCount);
+    // print_r($response_root_random_gen);
+    if ($response_root_random_gen["limit"]) {
+        return;
+    }
+    $folderId = $response_root_random_gen["id"];
+    // Checking For Rejected Id
+    if (in_array($folderId, $allRejectedId)) {
+        InsertRootFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount, $allRejectedId, ++$count);
+        return;
+    }
+    //Inserting Into MYSQL foldertable
+    // $folderId = "1234" ;
+    $root = "root";
+    $sql = " INSERT INTO foldertable (folderid, `serverToken` , `folderName` , `RootFolderPath` , `LastEdited` , `createdTime` , `userFolderPathName`) SELECT
+             
+                ? ,
+                (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1),
+                ?,
+                ?,
+                CURRENT_TIMESTAMP(),
+                CURRENT_TIMESTAMP(),
+                ?
+            WHERE EXISTS  (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
+            AND   NOT EXISTS  (SELECT folderid from foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?) AND folderid = ? limit 1)
+            AND   (SELECT count(*) AS count FROM foldertable WHERE serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?)) < ?
+            ";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "sssssssssi", $folderId, $_POST["userToken"], $_POST["folderName"], $_POST["RootFolderPath"], $root, $_POST["userToken"], $_POST["userToken"], $folderid , $_POST["userToken"] , $maxFolderCount);
+    if (!mysqli_stmt_execute($stmt)) {
+        echo "fai;ed stmt query ";
+        return;
+    }
+
+    // Inserting The value to Rejected Id
+    $allRejectedId[] = $folderId;
+    // checking For Insertion 
+    // echo "Count of inserted Row " .  mysqli_affected_rows($conn);
+    if (mysqli_affected_rows($conn) < 1) {
+        // check if folderid already exist or not 
+        $sql = "SELECT count(folderid) as count FROM foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?) AND folderid = $folderId  limit 1 ";
+        $stmt = mysqli_stmt_init($conn);
+        mysqli_stmt_prepare($stmt, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $_POST["userToken"]);
+        if (!mysqli_stmt_execute($stmt)) {
+            echo ("first one failed");
+            return;
+        }
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        if ($row["count"] !== 0) {
+            InsertRootFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount, $allRejectedId, ++$count);
+            return;
+        }
+    }else{
+        global $success;
+        $success =  true ;
+    }
+}
+
+function InsertSubFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount, $allRejectedId = [], $count = 0)
+{
+    //Importing Global Variables 
+    global $serverError ;
+    global $rootError ;
+    global $trashed ;
+    // check If root folder id exist or not 
+    
+    $sql =  "SELECT  count(folderid) as count from foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ? limit 1) AND folderid = ? limit 1";
+    $stmt  =  mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt , $sql) ;
+    mysqli_stmt_bind_param($stmt ,  "ss" , $_POST["userToken"] , $_POST["folderid"]) ;
+    if (!mysqli_stmt_execute($stmt)){
+        $serverError = true ;
+        return ;
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result) ;
+    if($row["count"] !== 1){
+        $rootError = true ;
+        return;
+    }
+
+    // check if root folder is trashed or not 
+    $sql = "SELECT  count(folderid) as  count from foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ? limit 1) AND folderid = ? and trashed = 0 limit 1" ;
+    $stmt  =  mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt , $sql) ;
+    mysqli_stmt_bind_param($stmt ,  "ss" , $_POST["userToken"] , $_POST["folderid"]) ;
+    if (!mysqli_stmt_execute($stmt)){
+        $serverError = true ;
+        return ;
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result) ;
+    if($row["count"] !== 1){
+        $trashed = true ;
+        return;
+    }
+
+    // Select an Id For Each Folder -----
+    $folderId = null;
+    //Generating An Random Id Which is not present in folderTable 
+
+    global $response_root_random_gen;
+    random_num_generator($conn, $maxFolderId, $minFolderId, $maxFolderCount);
+    if ($response_root_random_gen["limit"]) {
+        return;
+    }
+    $folderId = $response_root_random_gen["id"];
+    // Checking For Rejected Id
+    if (in_array($folderId, $allRejectedId)) {
+        InsertSubFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount, $allRejectedId, ++$count);
+        return;
+    }
+    //Inserting Into MYSQL foldertable
+    $root = $_POST["RootFolderPath"] . "/" . $_POST["folderid"];
+    $sql = " INSERT INTO foldertable (folderid, `serverToken` , `folderName` , `RootFolderPath` , `LastEdited` , `createdTime` , `userFolderPathName`) SELECT
+             
+                ? ,
+                (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1),
+                ?,
+                ?,
+                CURRENT_TIMESTAMP(),
+                CURRENT_TIMESTAMP(),
+                ?
+            WHERE EXISTS  (SELECT serverToken FROM `servertoken` WHERE `userToken` = ? LIMIT 1)
+            and exists (select folderid from foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ? limit 1) AND folderid = ? and trashed = 0 limit 1)
+            AND   NOT EXISTS  (SELECT folderid from foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?) AND folderid = ? limit 1)
+            AND   (SELECT count(*) AS count FROM foldertable WHERE serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?)) < ?
+            ";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    $rootFolderPath = $_POST["RootFolderPath"] . "/" . $_POST["folderid"];
+    mysqli_stmt_bind_param($stmt, "sssssssssssi", $folderId, $_POST["userToken"], $_POST["folderName"], $rootFolderPath, $root, $_POST["userToken"], $_POST["userToken"], $_POST["folderid"], $_POST["userToken"], $folderid,  $_POST["userToken"], $maxFolderCount);
+    if (!mysqli_stmt_execute($stmt)) {
+        echo "fai;ed some tree query ";
+        return;
+    }
+
+    // Inserting The value to Rejected Id
+    $allRejectedId[] = $folderId;
+    // checking For Insertion 
+    // echo "Count of inserted Row " .  mysqli_affected_rows($conn);
+    if (mysqli_affected_rows($conn) < 1) {
+        // check if folderid already exist or not 
+        $sql = "SELECT count(folderid) as count FROM foldertable where serverToken = (SELECT serverToken FROM servertoken WHERE userToken = ?) AND folderid = $folderId  limit 1 ";
+        $stmt = mysqli_stmt_init($conn);
+        mysqli_stmt_prepare($stmt, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $_POST["userToken"]);
+        if (!mysqli_stmt_execute($stmt)) {
+            echo ("first one failed");
+            return;
+        }
+
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        // cross check 
+        if ($row["count"] !== 0) {
+            InsertSubFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount, $allRejectedId, ++$count);
+        }
+    }else{
+        global $success ;
+        $success = true ;
+    }
+}
+
+if ($conn) {
+    $serverError = false;
+
+    // root folder ----->>>>>>>
+    if ($inputVerified && $isRootRoot) {
+        InsertRootFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount);
+    } else if ($inputVerified && !$isRootRoot) {
+        InsertSubFolder($conn, $maxFolderId, $minFolderId, $maxFolderCount);
+    }
+}
+
+
+$showArray = ["success" => $success, "maxFolderExceed" => $limitExceed , "serverError" => $serverError , "trashed" => $trashed , "rootError" => $rootError ];
 echo json_encode($showArray);
+// $serverError = true;
+// $limitExceed = true ;
+// $success = false ;

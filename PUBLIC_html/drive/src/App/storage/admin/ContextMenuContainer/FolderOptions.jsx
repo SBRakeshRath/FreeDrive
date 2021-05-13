@@ -30,13 +30,11 @@ export default function FolderOptions(props) {
     e.stopPropagation();
     let sendingArray = { folder: [], file: [] };
     // for Folder
+    console.log(selected) ;
     for (let index = 0; index < selected.folder.length; index++) {
       let element = selected.folder[index];
-      element = "fo" + parseInt(element);
-      let fo =
-        RequiredOnesFileAndFolder[0].current.folder[element][0].folderPath;
       sendingArray = {
-        folder: [...sendingArray.folder, fo],
+        folder: [element , ...sendingArray.folder],
         file: [...sendingArray.file],
       };
     }
